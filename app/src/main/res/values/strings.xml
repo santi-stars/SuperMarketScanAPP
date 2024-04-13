@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">SuperMarketScan</string>
+    <string name="load_product_error">Error al cargar el producto.</string>
+    <string name="load_product_success">Error al cargar el producto.</string>
+    <string name="load_products_error">Error al cargar los productos.</string>
+    <string name="load_products_success">Error al cargar los productos.</string>
+    <string name="delete_product_error">Error al eliminar el producto.</string>
+    <string name="delete_product_success">Producto eliminado con éxito.</string>
+    <string name="search">Busqueda</string>
+    <string name="ordenar_por">Ordenar por:</string>
+    <string name="precio_asc">precio asc</string>
+    <string name="precio_desc">precio desc</string>
+    <string name="nombre">nombre</string>
+    <string name="add_button">Añadir</string>
+    <string name="scan_product">Escanea tu producto</string>
+    <string name="rescan">Toca para escanear</string>
+</resources>
