@@ -1,5 +1,6 @@
 package com.svalero.supermarketscan.view;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.ContextMenu;
@@ -13,6 +14,7 @@ import android.widget.SearchView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.MenuItemCompat;
 
@@ -26,6 +28,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
 
 public class CalculadoraCompraView extends AppCompatActivity implements CalculadoraCompraContract.View,
         AdapterView.OnItemClickListener {
@@ -44,7 +48,7 @@ public class CalculadoraCompraView extends AppCompatActivity implements Calculad
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calculadora_compra);
-
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         productosVistaBase = new ArrayList<>();
         presenter = new CalculadoraCompraPresenter(this);
         productosArrayAdapter = new ProductosAdapter(this, productosVistaBase);
@@ -116,6 +120,7 @@ public class CalculadoraCompraView extends AppCompatActivity implements Calculad
         } else {
             presenter.loadProductoByQuery(query);
         }
+        getTotal();
         orderBy(orderBy);
     }
 
@@ -154,9 +159,9 @@ public class CalculadoraCompraView extends AppCompatActivity implements Calculad
         if (id == R.id.order_by_default_item) {
             orderBy("");
         } else if (id == R.id.order_by_asc_item) {
-            orderBy("precio_asc");
+            orderBy("asc");
         } else if (id == R.id.order_by_desc_item) {
-            orderBy("precio_desc");
+            orderBy("desc");
         } else if (id == R.id.order_by_nombre_item) {
             orderBy("nombre");
         } else {
@@ -207,15 +212,15 @@ public class CalculadoraCompraView extends AppCompatActivity implements Calculad
 
     private void deleteClient(AdapterView.AdapterContextMenuInfo info) {
 
-        /*
         ProductoVistaBase client = productosVistaBase.get(info.position);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(R.string.are_you_sure_delete_client)
+        builder.setMessage(R.string.are_you_sure_delete_product)
                 .setPositiveButton(R.string.yes_capital, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         presenter.deleteClient(client);
                         findClientsBy(DEFAULT_STRING);
+                        getTotal();
                     }
                 })
                 .setNegativeButton(R.string.no_capital, new DialogInterface.OnClickListener() {
@@ -226,7 +231,19 @@ public class CalculadoraCompraView extends AppCompatActivity implements Calculad
                 });
         builder.create().show();
 
-         */
+
+    }
+
+    private void getTotal() {
+        double sum = productosVistaBase.stream()
+                .mapToDouble(ProductoVistaBase::getPrecio) // Asumiendo que hay un método getPrecio() en ProductoVistaBase
+                .sum();
+        String total = String.format(Locale.getDefault(), "%.2f", sum); // Formatear a dos decimales
+        String totalTitle = getString(R.string.total_title); // Obtener la cadena de recurso para el título total
+        String euroSymbol = getString(R.string.euro); // Obtener la cadena de recurso para el símbolo del euro
+
+        System.out.println("TOTAL " + totalTitle + " " + total + euroSymbol);
+        Objects.requireNonNull(getSupportActionBar()).setTitle(totalTitle + " " + total + euroSymbol);
     }
 
     private void showDetails(int position) {
@@ -255,7 +272,7 @@ public class CalculadoraCompraView extends AppCompatActivity implements Calculad
     }
 
     public void addProduct(View view) {
-        Intent intent = new Intent(this, AddProducto.class);
+        Intent intent = new Intent(this, AddProductoView.class);
         startActivity(intent);
     }
 

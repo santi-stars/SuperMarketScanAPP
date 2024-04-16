@@ -14,4 +14,10 @@
     <string name="add_button">Añadir</string>
     <string name="scan_product">Escanea tu producto</string>
     <string name="rescan">Toca para escanear</string>
+    <string name="yes_capital">Si</string>
+    <string name="are_you_sure_delete_product">¿Estás seguro de que quieres eliminar el producto?</string>
+    <string name="no_capital">No</string>
+    <string name="total_title">"Total: "</string>
+    <string name="euro">€</string>
+    <string name="euro_kilo">€/kg</string>
 </resources>

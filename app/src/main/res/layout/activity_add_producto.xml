@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.AddProducto">
+    tools:context=".view.AddProductoView">
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -39,20 +39,21 @@
                 android:onClick="scanProduct"
                 android:orientation="horizontal"
                 android:visibility="visible"
-                app:cardBackgroundColor="@color/purple_semi">
+                app:cardBackgroundColor="@color/green_semi">
 
                 <TextView
-                    android:id="@+id/rescan_text"
+                    android:id="@+id/scan_text"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:text="@string/rescan"
                     android:textColor="@color/white_semi"
-                    android:textSize="24sp" />
+                    android:textSize="24sp"
+                    android:typeface="monospace" />
 
                 <ProgressBar
                     android:id="@+id/progressBar"
-                    style="@android:style/Widget.ProgressBar.Large"
+                    style="@android:style/Widget.DeviceDefault.ProgressBar.Large"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:indeterminateBehavior="repeat"
@@ -60,7 +61,6 @@
                     android:paddingBottom="120dp"
                     android:visibility="visible" />
             </androidx.cardview.widget.CardView>
-
 
 
             <LinearLayout
@@ -83,6 +83,7 @@
                     android:textAlignment="center"
                     android:textColor="@color/white_semi"
                     android:textSize="15sp"
+                    android:typeface="monospace"
                     tools:text="@string/scan_product" />
             </LinearLayout>
 
@@ -115,6 +116,7 @@
             android:layout_width="120dp"
             android:layout_height="120dp"
             android:layout_gravity="center"
+            android:layout_margin="6dp"
             android:background="@android:color/transparent"
             app:cardCornerRadius="12dp">
 
@@ -133,16 +135,41 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="60dp"
+            android:gravity="bottom|center_horizontal"
             android:orientation="horizontal">
 
-            <EditText
-                android:id="@+id/brand_edittext_add_bike"
+            <TextView
+                android:id="@+id/nombre_producto"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:ems="10"
+                android:gravity="center"
                 android:inputType="textPersonName"
-                android:paddingHorizontal="6dp" />
+                android:paddingHorizontal="6dp"
+                android:textAlignment="center"
+                android:textSize="30sp"
+                android:textStyle="bold"
+                android:typeface="monospace" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="90dp"
+            android:orientation="horizontal"
+            android:paddingTop="0dp">
+
+            <TextView
+                android:id="@+id/descripcion_producto"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:maxLines="4"
+                android:paddingHorizontal="6dp"
+                android:scrollbars="vertical"
+                android:textAlignment="center"
+                android:textSize="21sp"
+                android:typeface="monospace" />
         </LinearLayout>
 
         <LinearLayout
@@ -151,30 +178,33 @@
             android:orientation="horizontal"
             android:paddingTop="0dp">
 
-            <EditText
-                android:id="@+id/model_edittext_add_bike"
-                android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/precio_kilo_producto"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:ems="10"
+                android:gravity="center_vertical|end"
                 android:inputType="textPersonName"
-                android:paddingHorizontal="6dp" />
-        </LinearLayout>
+                android:paddingHorizontal="6dp"
+                android:textAlignment="textEnd"
+                android:textSize="21sp"
+                android:typeface="monospace" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:orientation="horizontal"
-            android:paddingTop="0dp">
-
-            <EditText
-                android:id="@+id/license_plate_edittext_add_bike"
-                android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/precio_producto"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:ems="10"
+                android:gravity="center_vertical|end"
                 android:inputType="textPersonName"
-                android:paddingHorizontal="6dp" />
+                android:paddingHorizontal="6dp"
+                android:paddingEnd="12dp"
+                android:textAlignment="textEnd"
+                android:textSize="33sp"
+                android:textStyle="bold"
+                android:typeface="monospace" />
         </LinearLayout>
 
     </LinearLayout>
@@ -187,8 +217,11 @@
         android:layout_marginEnd="6dp"
         android:layout_marginBottom="6dp"
         android:background="@drawable/custom_button"
-        android:onClick="addProducto"
+        android:onClick="saveProducto"
         android:text="@string/add_button"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:typeface="monospace"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/linearLayout" />

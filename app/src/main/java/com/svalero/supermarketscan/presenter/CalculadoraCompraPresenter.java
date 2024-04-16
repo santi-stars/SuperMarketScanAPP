@@ -38,9 +38,12 @@ public class CalculadoraCompraPresenter implements CalculadoraCompraContract.Pre
     @Override
     public void loadProductoByQuery(String query) {
         productosVBList.clear();
+        query = "%" + query + "%";
 
         try {
+            System.out.println("DIBUG loadProductoByQuery: " + query);
             productosVBList = model.loadProductoByQuery(query);
+            System.out.println("DIBUG loadProductoByQuery productosVBList: " + productosVBList);
             view.listProductosVB(productosVBList);
         } catch (Exception e) {
             e.printStackTrace();

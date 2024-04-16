@@ -20,13 +20,16 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.SuperMarketScan">
+        android:theme="@style/Base.Theme.SuperMarketScan.NoActionBar"
+        android:usesCleartextTraffic="true">
+
         <activity
-            android:name=".view.AddProducto"
-            android:exported="false"/>
+            android:name=".view.AddProductoView"
+            android:exported="false" />
         <activity
             android:name=".view.CalculadoraCompraView"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Base.Theme.SuperMarketScan" />
         <activity
             android:name=".view.MainActivityView"
             android:exported="true">

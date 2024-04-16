@@ -13,7 +13,10 @@ public interface SmScanApiInterface {
     @GET("Productos/base")
     Call<List<ProductoVistaBase>> getProductosBase();
 
+    @GET("master/{codigoBarras}.json")
+    Call<ProductoVistaBase> getProductoGitHub(@Path("codigoBarras") String codigoBarras);
+
     @GET("Productos/base/{codigoBarras}")
-    Call<List<ProductoVistaBase>> getProductoBase(@Path("codigoBarras") String codigoBarras);
+    Call<ProductoVistaBase> getProductoBase(@Path("codigoBarras") String codigoBarras);
 
 }

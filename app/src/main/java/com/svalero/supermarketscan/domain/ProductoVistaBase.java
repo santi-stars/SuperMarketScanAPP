@@ -5,6 +5,8 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import java.util.Arrays;
+
 @Entity
 public class ProductoVistaBase implements Comparable<ProductoVistaBase> {
 
@@ -19,7 +21,7 @@ public class ProductoVistaBase implements Comparable<ProductoVistaBase> {
     @ColumnInfo
     private String descripcion = "";
     @ColumnInfo
-    private double Precio = 0.0;
+    private double precio = 0.0;
     @ColumnInfo
     private double precioPorKg = 0.0;
 
@@ -32,7 +34,7 @@ public class ProductoVistaBase implements Comparable<ProductoVistaBase> {
         this.imagen = producto.getImagen();
         this.nombre = producto.getNombre();
         this.descripcion = producto.getDescripcion();
-        this.Precio = producto.getPrecio();
+        this.precio = producto.getPrecio();
         this.precioPorKg = producto.getPrecioPorKg();
     }
 
@@ -42,7 +44,7 @@ public class ProductoVistaBase implements Comparable<ProductoVistaBase> {
         this.imagen = imagen;
         this.nombre = nombre;
         this.descripcion = descripcion;
-        this.Precio = precio;
+        this.precio = precio;
         this.precioPorKg = precioPorKg;
     }
 
@@ -87,11 +89,11 @@ public class ProductoVistaBase implements Comparable<ProductoVistaBase> {
     }
 
     public double getPrecio() {
-        return Precio;
+        return precio;
     }
 
     public void setPrecio(double precio) {
-        this.Precio = precio;
+        this.precio = precio;
     }
 
     public double getPrecioPorKg() {
@@ -105,11 +107,12 @@ public class ProductoVistaBase implements Comparable<ProductoVistaBase> {
     @Override
     public String toString() {
         return "ProductoVistaBase{" +
+                "id='" + id + '\'' +
                 "codigoBarras='" + codigoBarras + '\'' +
-                ", imagen=" + imagen +
+                ", imagen=" + Arrays.toString(imagen) +
                 ", nombre='" + nombre + '\'' +
                 ", descripcion='" + descripcion + '\'' +
-                ", Precio=" + Precio +
+                ", precio=" + precio +
                 ", precioPorKg=" + precioPorKg +
                 '}';
     }

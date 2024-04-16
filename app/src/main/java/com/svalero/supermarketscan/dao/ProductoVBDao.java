@@ -16,10 +16,8 @@ public interface ProductoVBDao {
     @Query("SELECT * FROM ProductoVistaBase")
     List<ProductoVistaBase> getAll();
 
-    @Query("SELECT * FROM ProductoVistaBase WHERE " +
-            "codigoBarras = :query OR " +
-            "nombre LIKE :query OR " +
-            "descripcion LIKE :query")
+    @Query("SELECT * FROM ProductoVistaBase WHERE codigoBarras LIKE :query " +
+            "OR nombre LIKE :query OR descripcion LIKE :query")
     List<ProductoVistaBase> getProductoByQuery(String query);
 
     @Insert

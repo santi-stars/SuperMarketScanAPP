@@ -34,8 +34,9 @@ public class ProductosAdapter extends BaseAdapter {
 
         convertView = inflater.inflate(R.layout.producto_adapter, null);
         ImageView productoVBImage = (ImageView) convertView.findViewById(R.id.product_item_imageView);
-        TextView nombreTv = convertView.findViewById(R.id.product_tv1);
-        TextView preciosTv = convertView.findViewById(R.id.product_tv2);
+        TextView nombreTv = convertView.findViewById(R.id.product_nombre_adapter);
+        TextView descTv = convertView.findViewById(R.id.product_desc_adapter);
+        TextView precioTv = convertView.findViewById(R.id.product_precio_adapter);
 
         if (productoVB.getImagen() != null) {
             productoVBImage.setImageBitmap(ImageUtils.getBitmap(productoVB.getImagen()));
@@ -43,7 +44,8 @@ public class ProductosAdapter extends BaseAdapter {
             productoVBImage.setImageResource(R.drawable.calculator_fire);
         }
         nombreTv.setText(productoVB.getNombre());
-        preciosTv.setText(productoVB.getPrecioPorKg() + "€/kg.   -   " + productoVB.getPrecio() + "€");
+        descTv.setText(productoVB.getDescripcion());
+        precioTv.setText(productoVB.getPrecio() + "€");
 
         return convertView;
     }
