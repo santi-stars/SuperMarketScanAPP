@@ -6,7 +6,6 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -50,12 +49,13 @@ public class AddProductoView extends AppCompatActivity implements AddProductoCon
     private TextView scanText;
     private ProgressBar progressBar;
     private boolean isPaused;
+    private boolean isAddButton;
     private ListenableFuture<ProcessCameraProvider> cameraProviderFuture;
 
     private ProductoVistaBase producto;
     private AddProductoPresenter presenter;
     private Button addButton;
-    private ImageView bikeImage;
+    private ImageView productImage;
     private TextView etNombre;
     private TextView etDescripcion;
     private TextView etPrecioKilo;
@@ -80,17 +80,18 @@ public class AddProductoView extends AppCompatActivity implements AddProductoCon
         setContentView(R.layout.activity_add_producto);
         presenter = new AddProductoPresenter(this);
 
-        bikeImage = findViewById(R.id.bike_imageView);
-        etNombre = findViewById(R.id.nombre_producto);
-        etDescripcion = findViewById(R.id.descripcion_producto);
-        etPrecioKilo = findViewById(R.id.precio_kilo_producto);
-        etPrecio = findViewById(R.id.precio_producto);
-        addButton = findViewById(R.id.add_bike_button);
         lyScan = findViewById(R.id.scan_layout);
         scanText = findViewById(R.id.scan_text);
         progressBar = findViewById(R.id.progressBar);
+        productImage = findViewById(R.id.product_imageView);
+        etNombre = findViewById(R.id.nombre_producto);
+        etPrecio = findViewById(R.id.precio_producto);
+        addButton = findViewById(R.id.add_bike_button);
+        etPrecioKilo = findViewById(R.id.precio_kilo_producto);
+        etDescripcion = findViewById(R.id.descripcion_producto);
         producto = new ProductoVistaBase();
         isPaused = false;
+        isAddButton = false;
         // Llama al método para verificar y solicitar permisos de cámara
         checkCameraPermission();
         // Inicializa la vista previa de la cámara y el TextView mediante búsqueda por ID en el layout.
@@ -104,16 +105,20 @@ public class AddProductoView extends AppCompatActivity implements AddProductoCon
         checkCameraPermission();
     }
 
+    // ESCANEAR PRODUCTO
     public void scanProduct(View view) {
         isPaused = false;
+        changeAddButton(false);
         lyScan.setVisibility(View.INVISIBLE);
         progressBar.setVisibility(View.INVISIBLE);
         cleanForms();
         Toast.makeText(this, "escaneando producto", Toast.LENGTH_SHORT).show();
     }
 
+    // BUSCAR PRODUCTO
     private void searchProduct(String codigoBarras) {
         isPaused = true;
+        changeAddButton(false);
         presenter.loadProductByQuery(codigoBarras);
 
         scanText.setText("Buscando...");
@@ -123,30 +128,31 @@ public class AddProductoView extends AppCompatActivity implements AddProductoCon
         Toast.makeText(this, "buscando producto", Toast.LENGTH_SHORT).show();
     }
 
+    // PRODUCTO ENCONTRADO
     public void findedProduct(View view) {
-        isPaused = true;
         progressBar.setVisibility(View.INVISIBLE);
         scanText.setText("Toca para escanear");
-
-        Toast.makeText(this, "producto encontrado", Toast.LENGTH_SHORT).show();
     }
 
+    // GUARDAR PRODUCTO
     public void saveProducto(View view) {
         presenter.insertProduct(producto);
         Toast.makeText(this, "producto añadido", Toast.LENGTH_SHORT).show();
     }
 
-    private void cleanForms(){
-        bikeImage.setImageResource(R.drawable.calculator_fire);
+    // LIMPÍAR FORMULARIO
+    private void cleanForms() {
+        productImage.setImageResource(R.drawable.calculator_fire);
         etNombre.setText("");
         etDescripcion.setText("Apunta bien!!!");
         etPrecioKilo.setText("");
         etPrecio.setText("");
     }
 
+    // MOSTRAR PRODUCTO
     @Override
     public void showProduct(ProductoVistaBase product) {
-        bikeImage.setImageBitmap(ImageUtils.getBitmap(producto.getImagen()));
+        productImage.setImageBitmap(ImageUtils.getBitmap(producto.getImagen()));
         etNombre.setText(product.getNombre());
         etDescripcion.setText(product.getDescripcion());
         etPrecioKilo.setText(product.getPrecioPorKg() + "€/kg");
@@ -156,6 +162,29 @@ public class AddProductoView extends AppCompatActivity implements AddProductoCon
         producto.setId(0);
         producto.setImagen(null);
         findedProduct(null);
+        changeAddButton(true);
+    }
+
+    private void changeAddButton(boolean isAddButton) {
+        this.isAddButton = isAddButton;
+
+        if (isAddButton)
+            addButton.setText(R.string.add_button);
+        else
+            addButton.setText(R.string.return_button);
+    }
+
+    public void clickAddButton(View view) {
+        if (isAddButton) {
+            saveProducto(null);
+        } else {
+            returnView();
+        }
+    }
+
+    private void returnView() {
+        Intent intent = new Intent(this, CalculadoraCompraView.class);
+        startActivity(intent);
     }
 
     @Override
@@ -163,6 +192,7 @@ public class AddProductoView extends AppCompatActivity implements AddProductoCon
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
+    // CÁMARA Y PERMISOS ----------------------------------------------
     private void checkCameraPermission() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_REQUEST_CODE);
