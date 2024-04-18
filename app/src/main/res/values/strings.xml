@@ -12,6 +12,7 @@
     <string name="precio_desc">precio desc</string>
     <string name="nombre">nombre</string>
     <string name="add_button">Añadir</string>
+    <string name="return_button">Volver</string>
     <string name="scan_product">Escanea tu producto</string>
     <string name="rescan">Toca para escanear</string>
     <string name="yes_capital">Si</string>

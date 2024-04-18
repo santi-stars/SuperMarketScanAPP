@@ -121,7 +121,7 @@
             app:cardCornerRadius="12dp">
 
             <ImageView
-                android:id="@+id/bike_imageView"
+                android:id="@+id/product_imageView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
@@ -217,8 +217,8 @@
         android:layout_marginEnd="6dp"
         android:layout_marginBottom="6dp"
         android:background="@drawable/custom_button"
-        android:onClick="saveProducto"
-        android:text="@string/add_button"
+        android:onClick="clickAddButton"
+        android:text="@string/return_button"
         android:textSize="24sp"
         android:textStyle="bold"
         android:typeface="monospace"
