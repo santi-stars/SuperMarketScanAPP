@@ -112,26 +112,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline">
 
-<!--        <androidx.cardview.widget.CardView-->
-<!--            android:layout_width="120dp"-->
-<!--            android:layout_height="120dp"-->
-<!--            android:layout_gravity="center"-->
-<!--            android:layout_margin="6dp"-->
-<!--            android:background="@android:color/transparent"-->
-<!--            app:cardCornerRadius="30dp">-->
-
-            <ImageView
-                android:id="@+id/bike_imageView"
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:background="@drawable/rounded_corners_33"
-                android:layout_gravity="center"
-                android:adjustViewBounds="true"
-                android:contentDescription="@string/app_name"
-                android:scaleType="fitXY"
-                app:srcCompat="@drawable/calculator_fire" />
-
-<!--        </androidx.cardview.widget.CardView>-->
+        <ImageView
+            android:id="@+id/product_imageView"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_gravity="center"
+            android:adjustViewBounds="true"
+            android:background="@drawable/rounded_corners_33"
+            android:contentDescription="@string/app_name"
+            android:scaleType="fitXY"
+            app:srcCompat="@drawable/calculator_fire" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -218,14 +208,13 @@
         android:layout_marginEnd="6dp"
         android:layout_marginBottom="6dp"
         android:background="@drawable/custom_button"
-        android:onClick="saveProducto"
-        android:text="@string/add_button"
+        android:onClick="clickAddButton"
+        android:text="@string/return_button"
         android:textSize="24sp"
         android:textStyle="bold"
         android:typeface="monospace"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/linearLayout" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
