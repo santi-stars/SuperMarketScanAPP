@@ -21,6 +21,13 @@
     <item
         android:id="@+id/order_by_desc_item"
         android:title="@string/precio_desc" />
+    <item
+        android:id="@+id/order_by_total_asc_item"
+        android:title="@string/total_asc" />
+
+    <item
+        android:id="@+id/order_by_total_desc_item"
+        android:title="@string/total_desc" />
 
     <item
         android:id="@+id/order_by_nombre_item"

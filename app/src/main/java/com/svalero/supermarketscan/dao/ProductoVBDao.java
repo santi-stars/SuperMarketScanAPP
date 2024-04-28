@@ -17,8 +17,11 @@ public interface ProductoVBDao {
     List<ProductoVistaBase> getAll();
 
     @Query("SELECT * FROM ProductoVistaBase WHERE codigoBarras LIKE :query " +
-            "OR nombre LIKE :query OR descripcion LIKE :query")
-    List<ProductoVistaBase> getProductoByQuery(String query);
+            "OR nombre LIKE :query")
+    List<ProductoVistaBase> getProductosByQuery(String query);
+
+    @Query("SELECT * FROM ProductoVistaBase WHERE codigoBarras LIKE :query")
+    ProductoVistaBase getProductoByQuery(String query);
 
     @Insert
     void insert(ProductoVistaBase ProductoVistaBase);
@@ -27,5 +30,8 @@ public interface ProductoVBDao {
     void update(ProductoVistaBase ProductoVistaBase);
 
     @Delete
-    void delete(ProductoVistaBase ProductoVistaBase);
+    void deleteProduct(ProductoVistaBase ProductoVistaBase);
+
+    @Query("DELETE FROM ProductoVistaBase")
+    void deleteAll();
 }

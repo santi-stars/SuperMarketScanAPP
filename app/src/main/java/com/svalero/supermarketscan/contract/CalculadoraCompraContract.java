@@ -16,6 +16,8 @@ public interface CalculadoraCompraContract {
         List<ProductoVistaBase> loadProductoByQuery(String query);
 
         void deleteProduct(ProductoVistaBase producto);
+
+        void deleteAllProduct();
     }
 
     interface View {
@@ -30,6 +32,8 @@ public interface CalculadoraCompraContract {
 
         void loadProductoByQuery(String query);
 
-        void deleteClient(ProductoVistaBase producto);
+        void deleteProduct(ProductoVistaBase producto);
+
+        void deleteAllProduct();
     }
 }

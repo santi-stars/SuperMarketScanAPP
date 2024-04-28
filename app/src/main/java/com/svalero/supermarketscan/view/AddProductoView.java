@@ -55,24 +55,18 @@ public class AddProductoView extends AppCompatActivity implements AddProductoCon
     private ProductoVistaBase producto;
     private AddProductoPresenter presenter;
     private Button addButton;
+    private Button minusButton;
+    private Button plusButton;
     private ImageView productImage;
     private TextView etNombre;
     private TextView etDescripcion;
     private TextView etPrecioKilo;
     private TextView etPrecio;
+    private TextView etCantidad;
+    private TextView etPrecioTotal;
     private CardView lyScan;
     private Intent intent;
-
-//    private boolean modifyBike;
-//    public List<Client> clients;
-
-//    public Button getAddButton() {
-//        return addButton;
-//    }
-
-//    public void setModifyBike(boolean modifyBike) {
-//        this.modifyBike = modifyBike;
-//    }
+    private int cantidad;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,10 +80,15 @@ public class AddProductoView extends AppCompatActivity implements AddProductoCon
         productImage = findViewById(R.id.product_imageView);
         etNombre = findViewById(R.id.nombre_producto);
         etPrecio = findViewById(R.id.precio_producto);
+        etCantidad = findViewById(R.id.cantidad_producto);
+        etPrecioTotal = findViewById(R.id.precio_total_producto);
         addButton = findViewById(R.id.add_bike_button);
+        minusButton = findViewById(R.id.add_bike_button_minus);
+        plusButton = findViewById(R.id.add_bike_button_plus);
         etPrecioKilo = findViewById(R.id.precio_kilo_producto);
         etDescripcion = findViewById(R.id.descripcion_producto);
         producto = new ProductoVistaBase();
+        cantidad = 1;
         isPaused = false;
         isAddButton = false;
         // Llama al método para verificar y solicitar permisos de cámara
@@ -107,10 +106,13 @@ public class AddProductoView extends AppCompatActivity implements AddProductoCon
 
     // ESCANEAR PRODUCTO
     public void scanProduct(View view) {
+        cantidad = 1;
         isPaused = false;
         changeAddButton(false);
         lyScan.setVisibility(View.INVISIBLE);
         progressBar.setVisibility(View.INVISIBLE);
+        minusButton.setVisibility(View.INVISIBLE);
+        plusButton.setVisibility(View.INVISIBLE);
         cleanForms();
         Toast.makeText(this, "escaneando producto", Toast.LENGTH_SHORT).show();
     }
@@ -131,6 +133,8 @@ public class AddProductoView extends AppCompatActivity implements AddProductoCon
     // PRODUCTO ENCONTRADO
     public void findedProduct(View view) {
         progressBar.setVisibility(View.INVISIBLE);
+        minusButton.setVisibility(View.VISIBLE);
+        plusButton.setVisibility(View.VISIBLE);
         scanText.setText("Toca para escanear");
     }
 
@@ -147,6 +151,8 @@ public class AddProductoView extends AppCompatActivity implements AddProductoCon
         etDescripcion.setText("Apunta bien!!!");
         etPrecioKilo.setText("");
         etPrecio.setText("");
+        etCantidad.setText("");
+        etPrecioTotal.setText("");
     }
 
     // MOSTRAR PRODUCTO
@@ -157,10 +163,13 @@ public class AddProductoView extends AppCompatActivity implements AddProductoCon
         etDescripcion.setText(product.getDescripcion());
         etPrecioKilo.setText(product.getPrecioPorKg() + "€/kg");
         etPrecio.setText(product.getPrecio() + "€");
+        etCantidad.setText("x" + cantidad);
+        etPrecioTotal.setText(product.getPrecio() * cantidad + "€");
 
         producto = product;
         producto.setId(0);
-        producto.setImagen(null);
+        producto.setCantidad(cantidad);
+        producto.setImagen(new byte[0]);
         findedProduct(null);
         changeAddButton(true);
     }
@@ -180,6 +189,22 @@ public class AddProductoView extends AppCompatActivity implements AddProductoCon
         } else {
             returnView();
         }
+    }
+
+    public void clickMinusButton(View view) {
+        if (cantidad > 1) {
+            cantidad--;
+            producto.setCantidad(cantidad);
+            etCantidad.setText("x" + cantidad);
+            etPrecioTotal.setText(producto.getPrecio() * cantidad + "€");
+        }
+    }
+
+    public void clickPlusButton(View view) {
+        cantidad++;
+        producto.setCantidad(cantidad);
+        etCantidad.setText("x" + cantidad);
+        etPrecioTotal.setText(producto.getPrecio() * cantidad + "€");
     }
 
     private void returnView() {
@@ -255,22 +280,25 @@ public class AddProductoView extends AppCompatActivity implements AddProductoCon
                         // Modifica aquí la expresión regular para buscar secuencias de 13 dígitos
                         Pattern pattern = Pattern.compile("\\b(\\d{1,2})[-\\s]?(\\d{6})[-\\s]?(\\d{6})\\b");
                         Matcher matcher = pattern.matcher(fullText);
+                        System.out.println("2+++ matcher " + matcher);
                         StringBuilder resultText = new StringBuilder();
                         while (matcher.find()) {
                             // Concatena todas las coincidencias encontradas sin espacios ni guiones
                             String cleanLine = matcher.group(1) + matcher.group(2) + matcher.group(3); // Concatenar los grupos de números sin espacios ni guiones
+                            System.out.println("2+++ cleanLine " + cleanLine);
                             resultText.append(cleanLine).append("\n");
+                            System.out.println("2+++ resultText " + resultText);
                         }
 
-                        final String finalResultText = resultText.toString().trim();
+                        String finalResultText = resultText.toString().trim();
 
                         if (!isPaused) {
                             if (finalResultText.isEmpty()) {
                                 runOnUiThread(() -> detectedText.setText(getResources().getString(R.string.scan_product)));
                             } else {
                                 System.out.println("1+++ ");
+                                System.out.println("2+++ finalResultText " + finalResultText);
                                 runOnUiThread(() -> detectedText.setText(finalResultText)); // Actualiza el TextView con el texto detectado
-                                System.out.println("2+++ " + finalResultText);
                                 searchProduct(finalResultText);
                             }
                         }

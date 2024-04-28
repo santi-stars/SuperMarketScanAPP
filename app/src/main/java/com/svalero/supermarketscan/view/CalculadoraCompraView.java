@@ -135,6 +135,10 @@ public class CalculadoraCompraView extends AppCompatActivity implements Calculad
                         return Double.compare(o1.getPrecio(), o2.getPrecio());
                     case "desc":
                         return Double.compare(o2.getPrecio(), o1.getPrecio());
+                    case "total_asc":
+                        return Double.compare(o1.getPrecio()*o1.getCantidad(), o2.getPrecio()*o2.getCantidad());
+                    case "total_desc":
+                        return Double.compare(o2.getPrecio()*o2.getCantidad(), o1.getPrecio()*o1.getCantidad());
                     case "nombre":
                         return o1.getNombre().compareToIgnoreCase(o2.getNombre());
                     default:
@@ -162,6 +166,10 @@ public class CalculadoraCompraView extends AppCompatActivity implements Calculad
             orderBy("asc");
         } else if (id == R.id.order_by_desc_item) {
             orderBy("desc");
+        } else if (id == R.id.order_by_total_asc_item) {
+            orderBy("total_asc");
+        } else if (id == R.id.order_by_total_desc_item) {
+            orderBy("total_desc");
         } else if (id == R.id.order_by_nombre_item) {
             orderBy("nombre");
         } else {
@@ -198,27 +206,29 @@ public class CalculadoraCompraView extends AppCompatActivity implements Calculad
 
         int id = item.getItemId();
 
-        if (id == R.id.detail_menu) {                      // Detalles del cliente
+        if (id == R.id.detail_menu) {                      // Detalles del producto
             showDetails(info.position);
             return true;
-        } else if (id == R.id.delete_menu) {              // Eliminar cliente
-            deleteClient(info);
+        } else if (id == R.id.delete_menu) {              // Eliminar producto
+            deleteProduct(info);
+            return true;
+        } else if (id == R.id.delete_all_menu) {              // Eliminar lista
+            deleteAllProduct();
             return true;
         } else {
             return super.onContextItemSelected(item);
         }
     }
 
+    private void deleteProduct(AdapterView.AdapterContextMenuInfo info) {
 
-    private void deleteClient(AdapterView.AdapterContextMenuInfo info) {
-
-        ProductoVistaBase client = productosVistaBase.get(info.position);
+        ProductoVistaBase product = productosVistaBase.get(info.position);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(R.string.are_you_sure_delete_product)
                 .setPositiveButton(R.string.yes_capital, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        presenter.deleteClient(client);
+                        presenter.deleteProduct(product);
                         findClientsBy(DEFAULT_STRING);
                         getTotal();
                     }
@@ -230,17 +240,36 @@ public class CalculadoraCompraView extends AppCompatActivity implements Calculad
                     }
                 });
         builder.create().show();
+    }
 
+    private void deleteAllProduct() {
 
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.are_you_sure_delete_list)
+                .setPositiveButton(R.string.yes_capital, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        presenter.deleteAllProduct();
+                        findClientsBy(DEFAULT_STRING);
+                        getTotal();
+                    }
+                })
+                .setNegativeButton(R.string.no_capital, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+        builder.create().show();
     }
 
     private void getTotal() {
         double sum = productosVistaBase.stream()
-                .mapToDouble(ProductoVistaBase::getPrecio) // Asumiendo que hay un método getPrecio() en ProductoVistaBase
+                .mapToDouble(producto -> producto.getCantidad() * producto.getPrecio())
                 .sum();
-        String total = String.format(Locale.getDefault(), "%.2f", sum); // Formatear a dos decimales
-        String totalTitle = getString(R.string.total_title); // Obtener la cadena de recurso para el título total
-        String euroSymbol = getString(R.string.euro); // Obtener la cadena de recurso para el símbolo del euro
+        String total = String.format(Locale.getDefault(), "%.2f", sum);
+        String totalTitle = getString(R.string.total_title);
+        String euroSymbol = getString(R.string.euro);
 
         System.out.println("TOTAL " + totalTitle + " " + total + euroSymbol);
         Objects.requireNonNull(getSupportActionBar()).setTitle(totalTitle + " " + total + euroSymbol);

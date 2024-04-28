@@ -8,17 +8,22 @@
     <string name="delete_product_success">Producto eliminado con éxito.</string>
     <string name="search">Busqueda</string>
     <string name="ordenar_por">Ordenar por:</string>
-    <string name="precio_asc">precio asc</string>
-    <string name="precio_desc">precio desc</string>
-    <string name="nombre">nombre</string>
+    <string name="precio_asc">Precio ↗️</string>
+    <string name="precio_desc">Precio ↘️</string>
+    <string name="total_asc">Total ↗️</string>
+    <string name="total_desc">Total ↘️</string>
+    <string name="nombre">Nombre</string>
     <string name="add_button">Añadir</string>
     <string name="return_button">Volver</string>
     <string name="scan_product">Escanea tu producto</string>
     <string name="rescan">Toca para escanear</string>
     <string name="yes_capital">Si</string>
-    <string name="are_you_sure_delete_product">¿Estás seguro de que quieres eliminar el producto?</string>
+    <string name="are_you_sure_delete_product">¿Estás seguro de eliminar el producto?</string>
+    <string name="are_you_sure_delete_list">¿Estás seguro de eliminar la lista?</string>
     <string name="no_capital">No</string>
     <string name="total_title">"Total: "</string>
     <string name="euro">€</string>
     <string name="euro_kilo">€/kg</string>
+    <string name="delete_all_products_success">Lista eliminada con éxito</string>
+    <string name="delete_all_products_error">Error al eliminar la lista</string>
 </resources>

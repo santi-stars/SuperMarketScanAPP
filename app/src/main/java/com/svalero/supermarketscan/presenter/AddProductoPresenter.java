@@ -30,7 +30,8 @@ public class AddProductoPresenter implements AddProductoContract.Presenter, AddP
 
     @Override
     public void updateProduct(ProductoVistaBase producto) {
-
+        model.startDb(view.getApplicationContext());
+        model.updateProduct(producto);
     }
 
     @Override
