@@ -20,11 +20,15 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Base.Theme.SuperMarketScan.NoActionBar"
+        android:theme="@style/Base.Theme.SuperMarketScan.NoTitle"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".view.LoginView"
+            android:exported="false" />
+        <activity
             android:name=".view.SplashScreen"
-            android:exported="true">
+            android:exported="true"
+            android:theme="@style/Base.Theme.SuperMarketScan.FullScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
