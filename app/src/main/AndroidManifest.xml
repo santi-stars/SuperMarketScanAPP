@@ -22,16 +22,8 @@
         android:supportsRtl="true"
         android:theme="@style/Base.Theme.SuperMarketScan.NoActionBar"
         android:usesCleartextTraffic="true">
-
         <activity
-            android:name=".view.AddProductoView"
-            android:exported="false" />
-        <activity
-            android:name=".view.CalculadoraCompraView"
-            android:exported="false"
-            android:theme="@style/Base.Theme.SuperMarketScan" />
-        <activity
-            android:name=".view.MainActivityView"
+            android:name=".view.SplashScreen"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -39,6 +31,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".view.MainActivityView"
+            android:exported="false" />
+        <activity
+            android:name=".view.AddProductoView"
+            android:exported="false" />
+        <activity
+            android:name=".view.CalculadoraCompraView"
+            android:exported="false"
+            android:theme="@style/Base.Theme.SuperMarketScan" />
     </application>
 
 </manifest>
