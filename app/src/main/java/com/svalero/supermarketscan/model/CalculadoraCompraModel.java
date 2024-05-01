@@ -31,11 +31,16 @@ public class CalculadoraCompraModel implements CalculadoraCompraContract.Model {
 
     @Override
     public List<ProductoVistaBase> loadProductoByQuery(String query) {
-        return db.productoVBDao().getProductoByQuery(query);
+        return db.productoVBDao().getProductosByQuery(query);
     }
 
     @Override
     public void deleteProduct(ProductoVistaBase producto) {
-        db.productoVBDao().delete(producto);
+        db.productoVBDao().deleteProduct(producto);
+    }
+
+    @Override
+    public void deleteAllProduct() {
+        db.productoVBDao().deleteAll();
     }
 }

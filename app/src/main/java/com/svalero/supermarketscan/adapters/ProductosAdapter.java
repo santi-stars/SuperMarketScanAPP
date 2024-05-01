@@ -36,7 +36,8 @@ public class ProductosAdapter extends BaseAdapter {
         ImageView productoVBImage = (ImageView) convertView.findViewById(R.id.product_item_imageView);
         TextView nombreTv = convertView.findViewById(R.id.product_nombre_adapter);
         TextView descTv = convertView.findViewById(R.id.product_desc_adapter);
-        TextView precioTv = convertView.findViewById(R.id.product_precio_adapter);
+        TextView precioCantTv = convertView.findViewById(R.id.product_cant_adapter);
+        TextView precioTotalTv = convertView.findViewById(R.id.product_precio_adapter);
 
         if (productoVB.getImagen() != null) {
             productoVBImage.setImageBitmap(ImageUtils.getBitmap(productoVB.getImagen()));
@@ -45,7 +46,15 @@ public class ProductosAdapter extends BaseAdapter {
         }
         nombreTv.setText(productoVB.getNombre());
         descTv.setText(productoVB.getDescripcion());
-        precioTv.setText(productoVB.getPrecio() + "€");
+
+        if (productoVB.getCantidad() > 1) {
+            precioCantTv.setText(productoVB.getPrecio() + " x" + productoVB.getCantidad());
+        } else {
+            precioCantTv.setText("x" + productoVB.getCantidad());
+        }
+
+//        String total = String.valueOf(productoVB.getPrecio() * productoVB.getCantidad());
+        precioTotalTv.setText((productoVB.getPrecio() * productoVB.getCantidad()) + "€");
 
         return convertView;
     }

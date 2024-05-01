@@ -52,7 +52,7 @@ public class CalculadoraCompraPresenter implements CalculadoraCompraContract.Pre
     }
 
     @Override
-    public void deleteClient(ProductoVistaBase producto) {
+    public void deleteProduct(ProductoVistaBase producto) {
 
         try {
             model.deleteProduct(producto);
@@ -61,6 +61,18 @@ public class CalculadoraCompraPresenter implements CalculadoraCompraContract.Pre
             e.printStackTrace();
             showMessage(R.string.delete_product_error);
         }
+    }
+
+    @Override
+    public void deleteAllProduct() {
+
+            try {
+                model.deleteAllProduct();
+                showMessage(R.string.delete_all_products_success);
+            } catch (Exception e) {
+                e.printStackTrace();
+                showMessage(R.string.delete_all_products_error);
+            }
     }
 
     private void showMessage(int message) {

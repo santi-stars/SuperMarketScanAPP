@@ -7,5 +7,9 @@
 
     <item
         android:id="@+id/delete_menu"
-        android:title="💥 ELIMINAR"></item>
+        android:title="🗑 ELIMINAR"></item>
+
+    <item
+        android:id="@+id/delete_all_menu"
+        android:title="🗑️ BORRAR LISTA"></item>
 </menu>

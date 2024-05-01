@@ -39,12 +39,19 @@ public class AddProductoModel implements AddProductoContract.Model {
 
     @Override
     public void insertProduct(ProductoVistaBase producto) {
-        db.productoVBDao().insert(producto);
+        ProductoVistaBase productoDB = db.productoVBDao().getProductoByQuery(producto.getCodigoBarras());
+
+        if (productoDB == null) {
+            db.productoVBDao().insert(producto);
+        } else {
+            productoDB.setCantidad(productoDB.getCantidad() + producto.getCantidad());
+            db.productoVBDao().update(productoDB);
+        }
     }
 
     @Override
     public void updateProduct(ProductoVistaBase producto) {
-
+        db.productoVBDao().update(producto);
     }
 
     private void loadProductoCallEnqueue(OnLoadProductListener listener, Call<ProductoVistaBase> call) {

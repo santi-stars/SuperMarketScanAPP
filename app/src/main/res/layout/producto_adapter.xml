@@ -58,13 +58,13 @@
 
                     <TextView
                         android:id="@+id/product_nombre_adapter"
-                        android:layout_width="180dp"
+                        android:layout_width="162dp"
                         android:layout_height="33dp"
                         android:background="#00FFFFFF"
                         android:backgroundTint="#00FFFFFF"
                         android:gravity="start|center_vertical"
                         android:paddingStart="6dp"
-                        android:text="nombre"
+                        android:text="123456789012345"
                         android:textSize="18sp"
                         android:textStyle="bold"
                         android:typeface="monospace" />
@@ -77,9 +77,9 @@
                         android:backgroundTint="#00FFFFFF"
                         android:gravity="center_vertical|end"
                         android:paddingStart="6dp"
-                        android:paddingEnd="15dp"
+                        android:paddingEnd="6dp"
                         android:text="x6"
-                        android:textSize="21sp"
+                        android:textSize="15sp"
                         android:textStyle="bold"
                         android:typeface="monospace" />
                 </LinearLayout>
