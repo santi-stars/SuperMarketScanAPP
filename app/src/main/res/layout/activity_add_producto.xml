@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginStart="6dp"
-        android:layout_marginTop="6dp"
+        android:layout_marginTop="33dp"
         android:layout_marginEnd="6dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/guideline"
@@ -62,7 +62,6 @@
                     android:visibility="visible" />
             </androidx.cardview.widget.CardView>
 
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
@@ -96,7 +95,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.42" />
+        app:layout_constraintGuide_percent="0.39" />
 
     <LinearLayout
         android:id="@+id/linearLayout2"
@@ -236,14 +235,14 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/add_bike_button"
+        android:id="@+id/add_button"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:layout_weight="1.2"
         android:layout_marginStart="6dp"
         android:layout_marginEnd="6dp"
         android:layout_marginBottom="6dp"
-        android:background="@drawable/custom_button"
+        android:layout_weight="1.2"
+        android:background="@drawable/rounded_corners_33"
         android:onClick="clickAddButton"
         android:text="@string/return_button"
         android:textSize="24sp"
@@ -254,37 +253,41 @@
         app:layout_constraintStart_toStartOf="@+id/linearLayout" />
 
     <Button
-        android:id="@+id/add_bike_button_minus"
+        android:id="@+id/add_button_minus"
         android:layout_width="90dp"
         android:layout_height="60dp"
         android:layout_marginStart="6dp"
         android:layout_marginBottom="6dp"
         android:layout_weight="1.2"
+        android:background="@drawable/rounded_corners_33"
         android:backgroundTint="#2E6D67"
         android:backgroundTintMode="add"
         android:onClick="clickMinusButton"
         android:text="-"
-        android:textSize="24sp"
+        android:textSize="36sp"
         android:textStyle="bold"
         android:typeface="monospace"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/linearLayout" />
+        app:layout_constraintStart_toStartOf="@+id/linearLayout"
+        app:layout_constraintTop_toTopOf="@+id/add_button" />
 
     <Button
-        android:id="@+id/add_bike_button_plus"
+        android:id="@+id/add_button_plus"
         android:layout_width="90dp"
         android:layout_height="60dp"
         android:layout_marginEnd="6dp"
         android:layout_marginBottom="6dp"
         android:layout_weight="1.2"
+        android:background="@drawable/rounded_corners_33"
         android:backgroundTint="#2E6D67"
         android:backgroundTintMode="add"
         android:onClick="clickPlusButton"
         android:text="+"
-        android:textSize="24sp"
+        android:textSize="36sp"
         android:textStyle="bold"
         android:typeface="monospace"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/add_bike_button" />
+        app:layout_constraintEnd_toEndOf="@+id/add_button"
+        app:layout_constraintTop_toTopOf="@+id/add_button" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

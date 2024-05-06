@@ -73,6 +73,7 @@ public class AddProductoView extends AppCompatActivity implements AddProductoCon
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_producto);
         presenter = new AddProductoPresenter(this);
+        fullScreen();
 
         lyScan = findViewById(R.id.scan_layout);
         scanText = findViewById(R.id.scan_text);
@@ -82,9 +83,9 @@ public class AddProductoView extends AppCompatActivity implements AddProductoCon
         etPrecio = findViewById(R.id.precio_producto);
         etCantidad = findViewById(R.id.cantidad_producto);
         etPrecioTotal = findViewById(R.id.precio_total_producto);
-        addButton = findViewById(R.id.add_bike_button);
-        minusButton = findViewById(R.id.add_bike_button_minus);
-        plusButton = findViewById(R.id.add_bike_button_plus);
+        addButton = findViewById(R.id.add_button);
+        minusButton = findViewById(R.id.add_button_minus);
+        plusButton = findViewById(R.id.add_button_plus);
         etPrecioKilo = findViewById(R.id.precio_kilo_producto);
         etDescripcion = findViewById(R.id.descripcion_producto);
         producto = new ProductoVistaBase();
@@ -95,6 +96,17 @@ public class AddProductoView extends AppCompatActivity implements AddProductoCon
         checkCameraPermission();
         // Inicializa la vista previa de la cámara y el TextView mediante búsqueda por ID en el layout.
         previewView = findViewById(R.id.previewView);
+    }
+
+    private void fullScreen() {
+        // Oculta la barra de navegación y la barra de estado con el modo inmersivo pegajoso
+        getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+        );
     }
 
     @Override

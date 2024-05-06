@@ -8,12 +8,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.svalero.supermarketscan.R;
 
-public class MainActivityView extends AppCompatActivity {
+public class LoginView extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_login_view);
 
         fullScreen();
     }
@@ -29,8 +29,9 @@ public class MainActivityView extends AppCompatActivity {
         );
     }
 
-    public void calculadoraCompras(View view) {
-        Intent intent = new Intent(this, CalculadoraCompraView.class);
-        startActivity(intent);
+    public void initSesion(View view) {
+        startActivity(new Intent(LoginView.this, MainActivityView.class));
+        finish();
     }
+
 }

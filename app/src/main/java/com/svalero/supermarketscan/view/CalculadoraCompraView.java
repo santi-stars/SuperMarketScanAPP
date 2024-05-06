@@ -57,6 +57,18 @@ public class CalculadoraCompraView extends AppCompatActivity implements Calculad
         favorites = false;
 
         findClientsBy(DEFAULT_STRING);
+        fullScreen();
+    }
+
+    private void fullScreen() {
+        // Oculta la barra de navegación y la barra de estado con el modo inmersivo pegajoso
+        getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+        );
     }
 
     @Override
