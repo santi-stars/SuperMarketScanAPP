@@ -36,6 +36,7 @@ import com.svalero.supermarketscan.domain.ProductoVistaBase;
 import com.svalero.supermarketscan.presenter.AddProductoPresenter;
 import com.svalero.supermarketscan.util.ImageUtils;
 
+import java.text.DecimalFormat;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -67,6 +68,7 @@ public class AddProductoView extends AppCompatActivity implements AddProductoCon
     private CardView lyScan;
     private Intent intent;
     private int cantidad;
+    private DecimalFormat df;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +91,7 @@ public class AddProductoView extends AppCompatActivity implements AddProductoCon
         etPrecioKilo = findViewById(R.id.precio_kilo_producto);
         etDescripcion = findViewById(R.id.descripcion_producto);
         producto = new ProductoVistaBase();
+        df = new DecimalFormat("#.##");
         cantidad = 1;
         isPaused = false;
         isAddButton = false;
@@ -170,13 +173,14 @@ public class AddProductoView extends AppCompatActivity implements AddProductoCon
     // MOSTRAR PRODUCTO
     @Override
     public void showProduct(ProductoVistaBase product) {
+
         productImage.setImageBitmap(ImageUtils.getBitmap(producto.getImagen()));
         etNombre.setText(product.getNombre());
         etDescripcion.setText(product.getDescripcion());
-        etPrecioKilo.setText(product.getPrecioPorKg() + "€/kg");
-        etPrecio.setText(product.getPrecio() + "€");
+        etPrecioKilo.setText(df.format(product.getPrecioPorKg()) + "€/kg");
+        etPrecio.setText(df.format(product.getPrecio()) + "€");
         etCantidad.setText("x" + cantidad);
-        etPrecioTotal.setText(product.getPrecio() * cantidad + "€");
+        etPrecioTotal.setText(df.format(product.getPrecio() * cantidad) + "€");
 
         producto = product;
         producto.setId(0);
@@ -208,7 +212,7 @@ public class AddProductoView extends AppCompatActivity implements AddProductoCon
             cantidad--;
             producto.setCantidad(cantidad);
             etCantidad.setText("x" + cantidad);
-            etPrecioTotal.setText(producto.getPrecio() * cantidad + "€");
+            etPrecioTotal.setText(df.format(producto.getPrecio() * cantidad) + "€");
         }
     }
 
@@ -216,7 +220,7 @@ public class AddProductoView extends AppCompatActivity implements AddProductoCon
         cantidad++;
         producto.setCantidad(cantidad);
         etCantidad.setText("x" + cantidad);
-        etPrecioTotal.setText(producto.getPrecio() * cantidad + "€");
+        etPrecioTotal.setText(df.format(producto.getPrecio() * cantidad) + "€");
     }
 
     private void returnView() {

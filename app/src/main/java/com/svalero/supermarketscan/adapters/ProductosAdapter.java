@@ -14,6 +14,7 @@ import com.svalero.supermarketscan.R;
 import com.svalero.supermarketscan.domain.ProductoVistaBase;
 import com.svalero.supermarketscan.util.ImageUtils;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class ProductosAdapter extends BaseAdapter {
@@ -21,11 +22,13 @@ public class ProductosAdapter extends BaseAdapter {
     private Context context;
     private List<ProductoVistaBase> productoVBArrayList;
     private LayoutInflater inflater;
+    private DecimalFormat df;
 
     public ProductosAdapter(Activity context, List<ProductoVistaBase> productoVBArrayList) {
         this.context = context;
         this.productoVBArrayList = productoVBArrayList;
         inflater = LayoutInflater.from(context);
+        df = new DecimalFormat("#.##");
     }
 
     @Override
@@ -48,13 +51,16 @@ public class ProductosAdapter extends BaseAdapter {
         descTv.setText(productoVB.getDescripcion());
 
         if (productoVB.getCantidad() > 1) {
-            precioCantTv.setText(productoVB.getPrecio() + " x" + productoVB.getCantidad());
+            precioCantTv.setText(df.format(productoVB.getPrecio()) + " x" + productoVB.getCantidad());
         } else {
             precioCantTv.setText("x" + productoVB.getCantidad());
         }
 
-//        String total = String.valueOf(productoVB.getPrecio() * productoVB.getCantidad());
-        precioTotalTv.setText((productoVB.getPrecio() * productoVB.getCantidad()) + "€");
+        precioTotalTv.setText(df.format(productoVB.getPrecio() * productoVB.getCantidad()) + "€");
+
+        if (productoVB.getPrecio() * productoVB.getCantidad() >= 100.00) {
+            precioTotalTv.setTextSize(18);
+        }
 
         return convertView;
     }
