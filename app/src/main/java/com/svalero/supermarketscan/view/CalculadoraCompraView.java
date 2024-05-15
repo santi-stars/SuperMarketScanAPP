@@ -3,11 +3,13 @@ package com.svalero.supermarketscan.view;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.SearchView;
@@ -38,6 +40,7 @@ public class CalculadoraCompraView extends AppCompatActivity implements Calculad
     public ProductosAdapter productosArrayAdapter;
     private boolean favorites;
     private String orderBy;
+    private String nameList;
     private FrameLayout frameLayout;
     private final String DEFAULT_STRING = "";
     private CalculadoraCompraPresenter presenter;
@@ -54,12 +57,15 @@ public class CalculadoraCompraView extends AppCompatActivity implements Calculad
         productosArrayAdapter = new ProductosAdapter(this, productosVistaBase);
         //frameLayout = findViewById(R.id.frame_layout_client);
         orderBy = DEFAULT_STRING;
+//        nameList = DEFAULT_STRING;
+        nameList = "lista2";
         favorites = false;
 
         findClientsBy(DEFAULT_STRING);
         fullScreen();
     }
 
+    //TODO: getIntent nameList si no es null o vacio que no haga nada y si tiene nombre que ponga un titulo con el nombre de lista
     private void fullScreen() {
         // Oculta la barra de navegación y la barra de estado con el modo inmersivo pegajoso
         getWindow().getDecorView().setSystemUiVisibility(
@@ -128,9 +134,9 @@ public class CalculadoraCompraView extends AppCompatActivity implements Calculad
         productosVistaBase.clear();
 
         if (query.equalsIgnoreCase(DEFAULT_STRING)) {
-            presenter.loadAllProductosVB();
+            presenter.loadAllProductosByNameList(nameList);
         } else {
-            presenter.loadProductoByQuery(query);
+            presenter.loadProductoByQueryAndNameList(query, nameList);
         }
         getTotal();
         orderBy(orderBy);
@@ -148,9 +154,9 @@ public class CalculadoraCompraView extends AppCompatActivity implements Calculad
                     case "desc":
                         return Double.compare(o2.getPrecio(), o1.getPrecio());
                     case "total_asc":
-                        return Double.compare(o1.getPrecio()*o1.getCantidad(), o2.getPrecio()*o2.getCantidad());
+                        return Double.compare(o1.getPrecio() * o1.getCantidad(), o2.getPrecio() * o2.getCantidad());
                     case "total_desc":
-                        return Double.compare(o2.getPrecio()*o2.getCantidad(), o1.getPrecio()*o1.getCantidad());
+                        return Double.compare(o2.getPrecio() * o2.getCantidad(), o1.getPrecio() * o1.getCantidad());
                     case "nombre":
                         return o1.getNombre().compareToIgnoreCase(o2.getNombre());
                     default:
@@ -158,7 +164,7 @@ public class CalculadoraCompraView extends AppCompatActivity implements Calculad
                 }
             }
         });
-        productosArrayAdapter.notifyDataSetChanged();
+        refreshList();
     }
 
     /**
@@ -261,8 +267,8 @@ public class CalculadoraCompraView extends AppCompatActivity implements Calculad
                 .setPositiveButton(R.string.yes_capital, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        presenter.deleteAllProduct();
-                        findClientsBy(DEFAULT_STRING);
+                        presenter.deleteAllProductsByNameList(nameList);
+                        findClientsBy(nameList);
                         getTotal();
                     }
                 })
@@ -280,11 +286,14 @@ public class CalculadoraCompraView extends AppCompatActivity implements Calculad
                 .mapToDouble(producto -> producto.getCantidad() * producto.getPrecio())
                 .sum();
         String total = String.format(Locale.getDefault(), "%.2f", sum);
-        String totalTitle = getString(R.string.total_title);
         String euroSymbol = getString(R.string.euro);
+        String totalTitle = getString(R.string.total_title);
 
-        System.out.println("TOTAL " + totalTitle + " " + total + euroSymbol);
-        Objects.requireNonNull(getSupportActionBar()).setTitle(totalTitle + " " + total + euroSymbol);
+        if (nameList.equals(DEFAULT_STRING)) {
+            Objects.requireNonNull(getSupportActionBar()).setTitle(totalTitle + " " + total + euroSymbol);
+        } else {
+            Objects.requireNonNull(getSupportActionBar()).setTitle(nameList + ": " + total + euroSymbol);
+        }
     }
 
     private void showDetails(int position) {
@@ -320,5 +329,69 @@ public class CalculadoraCompraView extends AppCompatActivity implements Calculad
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         showDetails(position);
+    }
+
+    public void returnTo(View view) {
+        finish();
+    }
+
+    public void saveList(View view) {
+        if (productosVistaBase.size() > 0) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+            if (nameList.equals(DEFAULT_STRING)) {
+                builder.setTitle("Nombre de lista:");
+            } else {
+                builder.setTitle("Renombrar lista '" + nameList + "' a:");
+            }
+
+            final EditText input = new EditText(this);
+            input.setInputType(InputType.TYPE_CLASS_TEXT);
+            builder.setView(input);
+
+            builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    String listName = input.getText().toString();
+
+                    savePersonalList(listName);
+                }
+            });
+
+            builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            });
+
+            builder.show();
+        } else {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("Escanea productos para añadir a tu lista.");
+            builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            builder.show();
+        }
+    }
+
+    public void savePersonalList(String listName) {
+        if (productosVistaBase != null) {
+            for (ProductoVistaBase producto : productosVistaBase) {
+                producto.setNombreLista(listName);
+                presenter.updateProduct(producto);
+            }
+            if (nameList.equals(DEFAULT_STRING)) {
+                productosVistaBase.clear();
+            } else {
+                nameList = listName;
+            }
+            getTotal();
+        }
+        refreshList();
     }
 }

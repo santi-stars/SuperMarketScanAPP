@@ -7,10 +7,11 @@
     tools:context=".view.MainActivityView">
 
     <ImageView
-        android:id="@+id/imageButton"
+        android:id="@+id/calculatorButton"
         android:layout_width="match_parent"
         android:layout_height="180dp"
         android:layout_margin="15dp"
+        android:layout_marginBottom="48dp"
         android:background="@drawable/rounded_corners_60"
         android:clickable="true"
         android:contentDescription="@string/app_name"
@@ -18,9 +19,33 @@
         android:onClick="calculadoraCompras"
         android:scaleType="fitCenter"
         android:src="@drawable/calculator_fire"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/guideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.551"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/listsButton"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:layout_margin="15dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/rounded_corners_60"
+        android:clickable="true"
+        android:contentDescription="@string/app_name"
+        android:focusable="true"
+        android:onClick="calculadoraCompras"
+        android:scaleType="fitCenter"
+        android:src="@drawable/calculator_list_fire"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/guideline" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.5" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -17,15 +17,15 @@
 
         <ImageView
             android:id="@+id/product_item_imageView"
-            android:layout_width="90dp"
-            android:layout_height="90dp"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
             android:layout_gravity="center"
             android:layout_weight="0"
             android:adjustViewBounds="true"
             android:background="@drawable/rounded_corners_24"
             android:contentDescription="@string/app_name"
             android:scaleType="fitXY"
-            app:srcCompat="@drawable/calculator_fire" />
+            app:srcCompat="@drawable/calculator_list_fire" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -35,33 +35,22 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="33dp"
+                android:layout_height="36dp"
                 android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/product_nombre_adapter"
-                    android:layout_width="162dp"
-                    android:layout_height="33dp"
-                    android:background="#00FFFFFF"
-                    android:backgroundTint="#00FFFFFF"
-                    android:gravity="start|center_vertical"
-                    android:paddingStart="6dp"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:typeface="monospace" />
-
-                <TextView
-                    android:id="@+id/product_cant_adapter"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="#00FFFFFF"
                     android:backgroundTint="#00FFFFFF"
-                    android:gravity="center_vertical|end"
-                    android:paddingStart="6dp"
-                    android:paddingEnd="6dp"
-                    android:textSize="15sp"
+                    android:gravity="start|center_vertical"
+                    android:paddingStart="15dp"
+                    android:text="Nombre de la lista"
+                    android:textSize="21sp"
                     android:textStyle="bold"
                     android:typeface="monospace" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -71,29 +60,44 @@
 
                 <TextView
                     android:id="@+id/product_desc_adapter"
-                    android:layout_width="150dp"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:background="#00FFFFFF"
                     android:backgroundTint="#00FFFFFF"
                     android:gravity="start|center_vertical"
                     android:maxLines="3"
-                    android:paddingStart="6dp"
-                    android:textSize="12sp"
+                    android:paddingEnd="15dp"
+                    android:text="16,66€"
+                    android:textAlignment="textEnd"
+                    android:textSize="24sp"
                     android:textStyle="bold"
                     android:typeface="monospace" />
 
-                <TextView
-                    android:id="@+id/product_precio_adapter"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="#00FFFFFF"
-                    android:backgroundTint="#00FFFFFF"
-                    android:gravity="center_vertical|end"
-                    android:paddingStart="6dp"
-                    android:paddingEnd="6dp"
-                    android:textSize="21sp"
-                    android:textStyle="bold"
-                    android:typeface="monospace" />
+                <ImageView
+                    android:id="@+id/edit_item_imageView"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="0"
+                    android:adjustViewBounds="true"
+                    android:background="@drawable/rounded_corners_24"
+                    android:contentDescription="@string/app_name"
+                    android:scaleType="fitXY"
+                    app:srcCompat="@android:drawable/ic_menu_edit" />
+
+                <ImageView
+                    android:id="@+id/delete_item_imageView"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="0"
+                    android:adjustViewBounds="true"
+                    android:background="@drawable/rounded_corners_24"
+                    android:contentDescription="@string/app_name"
+                    android:scaleType="fitXY"
+                    app:srcCompat="@android:drawable/ic_delete" />
+
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

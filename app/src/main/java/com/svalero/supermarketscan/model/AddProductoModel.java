@@ -39,7 +39,7 @@ public class AddProductoModel implements AddProductoContract.Model {
 
     @Override
     public void insertProduct(ProductoVistaBase producto) {
-        ProductoVistaBase productoDB = db.productoVBDao().getProductoByQuery(producto.getCodigoBarras());
+        ProductoVistaBase productoDB = db.productoVBDao().getProductoByQueryAndNameList(producto.getCodigoBarras(), producto.getNombreLista());
 
         if (productoDB == null) {
             db.productoVBDao().insert(producto);

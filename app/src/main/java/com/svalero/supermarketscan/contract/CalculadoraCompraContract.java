@@ -11,13 +11,15 @@ public interface CalculadoraCompraContract {
 
         void startDb(Context context);
 
-        List<ProductoVistaBase> loadAllProductosVB();
+        List<ProductoVistaBase> loadAllProductosByNameList(String nameList);
 
-        List<ProductoVistaBase> loadProductoByQuery(String query);
+        List<ProductoVistaBase> loadProductosByQueryAndNameList(String query, String nameList);
+
+        void updateProduct(ProductoVistaBase producto);
 
         void deleteProduct(ProductoVistaBase producto);
 
-        void deleteAllProduct();
+        void deleteAllProductsByNameList(String nameList);
     }
 
     interface View {
@@ -28,12 +30,14 @@ public interface CalculadoraCompraContract {
 
     interface Presenter {
 
-        void loadAllProductosVB();
+        void loadAllProductosByNameList(String nameList);
 
-        void loadProductoByQuery(String query);
+        void loadProductoByQueryAndNameList(String query, String nameList);
+
+        void updateProduct(ProductoVistaBase producto);
 
         void deleteProduct(ProductoVistaBase producto);
 
-        void deleteAllProduct();
+        void deleteAllProductsByNameList(String nameList);
     }
 }

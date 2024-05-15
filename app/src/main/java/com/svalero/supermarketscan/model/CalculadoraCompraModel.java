@@ -25,13 +25,18 @@ public class CalculadoraCompraModel implements CalculadoraCompraContract.Model {
     }
 
     @Override
-    public List<ProductoVistaBase> loadAllProductosVB() {
-        return db.productoVBDao().getAll();
+    public List<ProductoVistaBase> loadAllProductosByNameList(String nameList) {
+        return db.productoVBDao().getAllByNameList(nameList);
     }
 
     @Override
-    public List<ProductoVistaBase> loadProductoByQuery(String query) {
-        return db.productoVBDao().getProductosByQuery(query);
+    public List<ProductoVistaBase> loadProductosByQueryAndNameList(String query, String nameList) {
+        return db.productoVBDao().getAllByQueryAndNameList(query, nameList);
+    }
+
+    @Override
+    public void updateProduct(ProductoVistaBase producto) {
+        db.productoVBDao().update(producto);
     }
 
     @Override
@@ -39,8 +44,7 @@ public class CalculadoraCompraModel implements CalculadoraCompraContract.Model {
         db.productoVBDao().deleteProduct(producto);
     }
 
-    @Override
-    public void deleteAllProduct() {
-        db.productoVBDao().deleteAll();
+    public void deleteAllProductsByNameList(String nameList) {
+        db.productoVBDao().deleteAllByNameList(nameList);
     }
 }

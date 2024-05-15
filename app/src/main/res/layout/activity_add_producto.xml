@@ -6,6 +6,18 @@
     android:layout_height="match_parent"
     tools:context=".view.AddProductoView">
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/return_floating_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="42dp"
+        android:layout_marginBottom="90dp"
+        android:clickable="true"
+        android:onClick="returnTo"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@android:drawable/ic_menu_revert" />
+
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
@@ -95,7 +107,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.39" />
+        app:layout_constraintGuide_begin="285dp" />
 
     <LinearLayout
         android:id="@+id/linearLayout2"
@@ -243,9 +255,12 @@
         android:layout_marginEnd="15dp"
         android:layout_marginBottom="15dp"
         android:layout_weight="1.2"
+        android:alpha="0.6"
         android:background="@drawable/rounded_corners_33"
+        android:clickable="false"
+        android:enabled="false"
         android:onClick="clickAddButton"
-        android:text="@string/return_button"
+        android:text="@string/add_button"
         android:textSize="24sp"
         android:textStyle="bold"
         android:typeface="monospace"

@@ -23,11 +23,11 @@ public class CalculadoraCompraPresenter implements CalculadoraCompraContract.Pre
         this.view = view;
     }
 
-    public void loadAllProductosVB() {
+    public void loadAllProductosByNameList(String nameList) {
         productosVBList.clear();
 
         try {
-            productosVBList = model.loadAllProductosVB();
+            productosVBList = model.loadAllProductosByNameList(nameList);
             view.listProductosVB(productosVBList);
         } catch (Exception e) {
             e.printStackTrace();
@@ -36,19 +36,25 @@ public class CalculadoraCompraPresenter implements CalculadoraCompraContract.Pre
     }
 
     @Override
-    public void loadProductoByQuery(String query) {
+    public void loadProductoByQueryAndNameList(String query, String nameList) {
         productosVBList.clear();
         query = "%" + query + "%";
 
         try {
             System.out.println("DIBUG loadProductoByQuery: " + query);
-            productosVBList = model.loadProductoByQuery(query);
+            productosVBList = model.loadProductosByQueryAndNameList(query, nameList);
             System.out.println("DIBUG loadProductoByQuery productosVBList: " + productosVBList);
             view.listProductosVB(productosVBList);
         } catch (Exception e) {
             e.printStackTrace();
             view.showMessage(R.string.load_products_error);
         }
+    }
+
+    @Override
+    public void updateProduct(ProductoVistaBase producto) {
+        model.startDb(view.getApplicationContext());
+        model.updateProduct(producto);
     }
 
     @Override
@@ -64,10 +70,10 @@ public class CalculadoraCompraPresenter implements CalculadoraCompraContract.Pre
     }
 
     @Override
-    public void deleteAllProduct() {
+    public void deleteAllProductsByNameList(String nameList) {
 
             try {
-                model.deleteAllProduct();
+                model.deleteAllProductsByNameList(nameList);
                 showMessage(R.string.delete_all_products_success);
             } catch (Exception e) {
                 e.printStackTrace();

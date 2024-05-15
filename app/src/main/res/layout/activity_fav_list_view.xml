@@ -4,9 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#E2F8F6"
-    tools:context=".view.CalculadoraCompraView">
-
+    tools:context=".view.FavListView">
 
     <RelativeLayout
         android:id="@+id/linearLayout"
@@ -21,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ListView
-            android:id="@+id/product_lisview"
+            android:id="@+id/product_list_lisview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignParentStart="true"
@@ -37,30 +35,6 @@
     </RelativeLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/scan_product_floating_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="42dp"
-        android:layout_marginBottom="42dp"
-        android:clickable="true"
-        android:onClick="addProduct"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@android:drawable/ic_menu_add" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/add_save_list_floating_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="42dp"
-        android:clickable="true"
-        android:onClick="saveList"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@android:drawable/star_big_off" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/return_floating_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -71,5 +45,4 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@android:drawable/ic_menu_revert" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

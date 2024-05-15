@@ -26,6 +26,8 @@ public class ProductoVistaBase implements Comparable<ProductoVistaBase> {
     private double precioPorKg = 0.0;
     @ColumnInfo
     private int cantidad = 0;
+    @ColumnInfo
+    private String nombreLista = "";
 
     public ProductoVistaBase() {
     }
@@ -39,10 +41,11 @@ public class ProductoVistaBase implements Comparable<ProductoVistaBase> {
         this.precio = producto.getPrecio();
         this.precioPorKg = producto.getPrecioPorKg();
         this.cantidad = producto.getCantidad();
+        this.nombreLista = producto.getNombreLista();
     }
 
     @Ignore
-    public ProductoVistaBase(String codigoBarras, byte[] imagen, String nombre, String descripcion, double precio, double precioPorKg, int cantidad) {
+    public ProductoVistaBase(String codigoBarras, byte[] imagen, String nombre, String descripcion, double precio, double precioPorKg, int cantidad, String nombreLista) {
         this.codigoBarras = codigoBarras;
         this.imagen = imagen;
         this.nombre = nombre;
@@ -50,6 +53,7 @@ public class ProductoVistaBase implements Comparable<ProductoVistaBase> {
         this.precio = precio;
         this.precioPorKg = precioPorKg;
         this.cantidad = cantidad;
+        this.nombreLista = nombreLista;
     }
 
     public int getId() {
@@ -116,6 +120,14 @@ public class ProductoVistaBase implements Comparable<ProductoVistaBase> {
         this.cantidad = cantidad;
     }
 
+    public String getNombreLista() {
+        return nombreLista;
+    }
+
+    public void setNombreLista(String nombreLista) {
+        this.nombreLista = nombreLista;
+    }
+
     @Override
     public String toString() {
         return "ProductoVistaBase{" +
@@ -127,6 +139,7 @@ public class ProductoVistaBase implements Comparable<ProductoVistaBase> {
                 ", precio=" + precio +
                 ", precioPorKg=" + precioPorKg +
                 ", cantidad=" + cantidad +
+                ", nombreLista=" + nombreLista +
                 '}';
     }
 

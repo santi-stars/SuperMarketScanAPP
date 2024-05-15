@@ -16,12 +16,21 @@ public interface ProductoVBDao {
     @Query("SELECT * FROM ProductoVistaBase")
     List<ProductoVistaBase> getAll();
 
-    @Query("SELECT * FROM ProductoVistaBase WHERE codigoBarras LIKE :query " +
-            "OR nombre LIKE :query")
-    List<ProductoVistaBase> getProductosByQuery(String query);
+    @Query("SELECT * FROM ProductoVistaBase WHERE nombreLista LIKE :nameList")
+    List<ProductoVistaBase> getAllByNameList(String nameList);
+
+    @Query("SELECT * FROM ProductoVistaBase WHERE (codigoBarras LIKE :query OR nombre LIKE :query)" +
+            " AND (nombreLista LIKE :nameList)")
+    List<ProductoVistaBase> getAllByQueryAndNameList(String query, String nameList);
+
+    @Query("SELECT DISTINCT(nombreLista) FROM ProductoVistaBase ")
+    List<ProductoVistaBase> getProductsListsByQuery();
 
     @Query("SELECT * FROM ProductoVistaBase WHERE codigoBarras LIKE :query")
     ProductoVistaBase getProductoByQuery(String query);
+
+    @Query("SELECT * FROM ProductoVistaBase WHERE codigoBarras LIKE :query AND nombreLista LIKE :nameList")
+    ProductoVistaBase getProductoByQueryAndNameList(String query, String nameList);
 
     @Insert
     void insert(ProductoVistaBase ProductoVistaBase);
@@ -32,6 +41,6 @@ public interface ProductoVBDao {
     @Delete
     void deleteProduct(ProductoVistaBase ProductoVistaBase);
 
-    @Query("DELETE FROM ProductoVistaBase")
-    void deleteAll();
+    @Query("DELETE FROM ProductoVistaBase WHERE nombreLista LIKE :nameList")
+    void deleteAllByNameList(String nameList);
 }

@@ -23,6 +23,9 @@
         android:theme="@style/Base.Theme.SuperMarketScan.NoTitle"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".view.FavListView"
+            android:exported="false" />
+        <activity
             android:name=".view.LoginView"
             android:exported="false" />
         <activity

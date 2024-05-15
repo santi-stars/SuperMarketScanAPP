@@ -193,11 +193,17 @@ public class AddProductoView extends AppCompatActivity implements AddProductoCon
     private void changeAddButton(boolean isAddButton) {
         this.isAddButton = isAddButton;
 
-        if (isAddButton)
-            addButton.setText(R.string.add_button);
-        else
-            addButton.setText(R.string.return_button);
+        if (isAddButton) {
+            addButton.setAlpha(1.0f);
+            addButton.setClickable(true);
+            addButton.setEnabled(true);
+        } else {
+            addButton.setAlpha(0.6f);
+            addButton.setClickable(false);
+            addButton.setEnabled(false);
+        }
     }
+
 
     public void clickAddButton(View view) {
         if (isAddButton) {
@@ -333,5 +339,9 @@ public class AddProductoView extends AppCompatActivity implements AddProductoCon
     private void handlePermissionDenial() {
         // Maneja la negativa de los permisos
         Toast.makeText(this, "Debes aceptar el uso de la cámara para escanear productos!", Toast.LENGTH_SHORT).show();
+    }
+
+    public void returnTo(View view) {
+        finish();
     }
 }
