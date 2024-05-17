@@ -36,38 +36,38 @@ import java.util.Objects;
 public class CalculadoraCompraView extends AppCompatActivity implements CalculadoraCompraContract.View,
         AdapterView.OnItemClickListener {
 
-    public List<ProductoVistaBase> productosVistaBase;
-    public ProductosAdapter productosArrayAdapter;
-    private boolean favorites;
+    private Intent intent;
     private String orderBy;
     private String nameList;
-    private FrameLayout frameLayout;
     private final String DEFAULT_STRING = "";
     private CalculadoraCompraPresenter presenter;
+    public ProductosAdapter productosArrayAdapter;
+    public List<ProductoVistaBase> productosVistaBase;
 
     //TODO: quitar spinner y refactorizar "client" por "product"
+    private FrameLayout frameLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calculadora_compra);
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+//
+//        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+
         productosVistaBase = new ArrayList<>();
         presenter = new CalculadoraCompraPresenter(this);
         productosArrayAdapter = new ProductosAdapter(this, productosVistaBase);
         //frameLayout = findViewById(R.id.frame_layout_client);
-        orderBy = DEFAULT_STRING;
-//        nameList = DEFAULT_STRING;
-        nameList = "lista2";
-        favorites = false;
+        nameList = DEFAULT_STRING;
+        intent();
 
+        orderBy = DEFAULT_STRING;
         findClientsBy(DEFAULT_STRING);
         fullScreen();
     }
 
     //TODO: getIntent nameList si no es null o vacio que no haga nada y si tiene nombre que ponga un titulo con el nombre de lista
     private void fullScreen() {
-        // Oculta la barra de navegación y la barra de estado con el modo inmersivo pegajoso
         getWindow().getDecorView().setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                         | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
@@ -81,7 +81,28 @@ public class CalculadoraCompraView extends AppCompatActivity implements Calculad
     protected void onResume() {
         super.onResume();
 
+        intent();
         findClientsBy(DEFAULT_STRING);
+    }
+
+    private void intent() {
+        intent = getIntent();
+        String nameListIntent;
+
+        if (intent.getStringExtra(getString(R.string.namelist)) != null) {
+            nameListIntent = intent.getStringExtra(getString(R.string.namelist));
+
+            if (nameListIntent.trim().isEmpty())
+                nameList = DEFAULT_STRING;
+            else
+                nameList = nameListIntent;
+        }
+
+        getTotal();
+    }
+
+    private boolean isFavList() {
+        return !nameList.trim().equals(DEFAULT_STRING);
     }
 
     @Override
@@ -133,11 +154,11 @@ public class CalculadoraCompraView extends AppCompatActivity implements Calculad
     private void findClientsBy(String query) {
         productosVistaBase.clear();
 
-        if (query.equalsIgnoreCase(DEFAULT_STRING)) {
+        if (query.equalsIgnoreCase(DEFAULT_STRING))
             presenter.loadAllProductosByNameList(nameList);
-        } else {
+        else
             presenter.loadProductoByQueryAndNameList(query, nameList);
-        }
+
         getTotal();
         orderBy(orderBy);
     }
@@ -205,8 +226,7 @@ public class CalculadoraCompraView extends AppCompatActivity implements Calculad
      * @param menuInfo
      */
     @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo
-            menuInfo) {
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
 
         getMenuInflater().inflate(R.menu.listview_menu, menu);
@@ -233,9 +253,7 @@ public class CalculadoraCompraView extends AppCompatActivity implements Calculad
         } else if (id == R.id.delete_all_menu) {              // Eliminar lista
             deleteAllProduct();
             return true;
-        } else {
-            return super.onContextItemSelected(item);
-        }
+        } else return super.onContextItemSelected(item);
     }
 
     private void deleteProduct(AdapterView.AdapterContextMenuInfo info) {
@@ -257,6 +275,7 @@ public class CalculadoraCompraView extends AppCompatActivity implements Calculad
                         dialog.dismiss();
                     }
                 });
+
         builder.create().show();
     }
 
@@ -278,6 +297,7 @@ public class CalculadoraCompraView extends AppCompatActivity implements Calculad
                         dialog.dismiss();
                     }
                 });
+
         builder.create().show();
     }
 
@@ -288,12 +308,13 @@ public class CalculadoraCompraView extends AppCompatActivity implements Calculad
         String total = String.format(Locale.getDefault(), "%.2f", sum);
         String euroSymbol = getString(R.string.euro);
         String totalTitle = getString(R.string.total_title);
+        String calculatorIcon = "🧮";
+        String favIcon = "⭐";
 
-        if (nameList.equals(DEFAULT_STRING)) {
-            Objects.requireNonNull(getSupportActionBar()).setTitle(totalTitle + " " + total + euroSymbol);
-        } else {
-            Objects.requireNonNull(getSupportActionBar()).setTitle(nameList + ": " + total + euroSymbol);
-        }
+        if (isFavList())
+            Objects.requireNonNull(getSupportActionBar()).setTitle(favIcon + " " + nameList + ": " + total + euroSymbol);
+        else
+            Objects.requireNonNull(getSupportActionBar()).setTitle(calculatorIcon + " " + totalTitle + " " + total + euroSymbol);
     }
 
     private void showDetails(int position) {
@@ -321,8 +342,12 @@ public class CalculadoraCompraView extends AppCompatActivity implements Calculad
         */
     }
 
-    public void addProduct(View view) {
+    public void scanProduct(View view) {
+        Bundle datos = new Bundle();
+        datos.putString(getString(R.string.namelist), nameList);
+
         Intent intent = new Intent(this, AddProductoView.class);
+        intent.putExtras(datos);
         startActivity(intent);
     }
 
@@ -339,26 +364,27 @@ public class CalculadoraCompraView extends AppCompatActivity implements Calculad
         if (productosVistaBase.size() > 0) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-            if (nameList.equals(DEFAULT_STRING)) {
-                builder.setTitle("Nombre de lista:");
-            } else {
-                builder.setTitle("Renombrar lista '" + nameList + "' a:");
-            }
+            if (isFavList())
+                builder.setTitle(getString(R.string.rename_list) + nameList + getString(R.string.a_double_dot));
+            else
+                builder.setTitle(R.string.namelist_double_dot);
 
             final EditText input = new EditText(this);
             input.setInputType(InputType.TYPE_CLASS_TEXT);
             builder.setView(input);
 
-            builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+            builder.setPositiveButton(R.string.aceptar, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     String listName = input.getText().toString();
 
-                    savePersonalList(listName);
+                    if (listName.trim().isEmpty())
+                        showEmptyListNameDialog();
+                    else
+                        savePersonalList(listName);
                 }
             });
-
-            builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+            builder.setNegativeButton(R.string.cancelar, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.cancel();
@@ -368,30 +394,44 @@ public class CalculadoraCompraView extends AppCompatActivity implements Calculad
             builder.show();
         } else {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage("Escanea productos para añadir a tu lista.");
-            builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+            builder.setMessage(R.string.scan_to_add_products_to_list);
+            builder.setPositiveButton(R.string.aceptar, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
                 }
             });
+
             builder.show();
         }
     }
 
-    public void savePersonalList(String listName) {
-        if (productosVistaBase != null) {
+    private void showEmptyListNameDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.name_list_cant_be_empty);
+        builder.setPositiveButton(R.string.aceptar, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        builder.show();
+    }
+
+    private void savePersonalList(String listName) {
+        if (productosVistaBase != null)
             for (ProductoVistaBase producto : productosVistaBase) {
                 producto.setNombreLista(listName);
                 presenter.updateProduct(producto);
             }
-            if (nameList.equals(DEFAULT_STRING)) {
-                productosVistaBase.clear();
-            } else {
-                nameList = listName;
-            }
-            getTotal();
-        }
+
+        if (isFavList())
+            nameList = listName;
+        else
+            productosVistaBase.clear();
+
+        getTotal();
         refreshList();
     }
 }

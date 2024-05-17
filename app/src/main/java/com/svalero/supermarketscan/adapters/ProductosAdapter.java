@@ -42,25 +42,24 @@ public class ProductosAdapter extends BaseAdapter {
         TextView precioCantTv = convertView.findViewById(R.id.product_cant_adapter);
         TextView precioTotalTv = convertView.findViewById(R.id.product_precio_adapter);
 
-        if (productoVB.getImagen() != null) {
+        if (productoVB.getImagen() != null)
+            if(!productoVB.getImagen().isEmpty())
             productoVBImage.setImageBitmap(ImageUtils.getBitmap(productoVB.getImagen()));
-        } else {
+        else
             productoVBImage.setImageResource(R.drawable.calculator_fire);
-        }
+
         nombreTv.setText(productoVB.getNombre());
         descTv.setText(productoVB.getDescripcion());
 
-        if (productoVB.getCantidad() > 1) {
+        if (productoVB.getCantidad() > 1)
             precioCantTv.setText(df.format(productoVB.getPrecio()) + " x" + productoVB.getCantidad());
-        } else {
+        else
             precioCantTv.setText("x" + productoVB.getCantidad());
-        }
 
         precioTotalTv.setText(df.format(productoVB.getPrecio() * productoVB.getCantidad()) + "€");
 
-        if (productoVB.getPrecio() * productoVB.getCantidad() >= 100.00) {
+        if (productoVB.getPrecio() * productoVB.getCantidad() >= 100.00)
             precioTotalTv.setTextSize(18);
-        }
 
         return convertView;
     }

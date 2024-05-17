@@ -3,7 +3,11 @@ package com.svalero.supermarketscan.view;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -36,6 +40,9 @@ import com.svalero.supermarketscan.domain.ProductoVistaBase;
 import com.svalero.supermarketscan.presenter.AddProductoPresenter;
 import com.svalero.supermarketscan.util.ImageUtils;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.text.DecimalFormat;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -66,16 +73,20 @@ public class AddProductoView extends AppCompatActivity implements AddProductoCon
     private TextView etCantidad;
     private TextView etPrecioTotal;
     private CardView lyScan;
-    private Intent intent;
     private int cantidad;
+    private Intent intent;
+    private String nameList;
     private DecimalFormat df;
+    private final String DEFAULT_STRING = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_producto);
         presenter = new AddProductoPresenter(this);
+        nameList = DEFAULT_STRING;
         fullScreen();
+        intent();
 
         lyScan = findViewById(R.id.scan_layout);
         scanText = findViewById(R.id.scan_text);
@@ -99,6 +110,54 @@ public class AddProductoView extends AppCompatActivity implements AddProductoCon
         checkCameraPermission();
         // Inicializa la vista previa de la cámara y el TextView mediante búsqueda por ID en el layout.
         previewView = findViewById(R.id.previewView);
+//        imagenesAJson();
+    }
+
+    //TODO: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+    private void imagenesAJson() {
+        // Configura tu ImageView aquí
+        ImageView productImageView = findViewById(R.id.product_imageView);
+//        productImageView.setImageResource(R.drawable.huevos); // Asegúrate de que tu imagen esté cargada
+//        imagenesDeRecursosDrawableAStringJson(productImageView);
+        productImageView.setImageResource(R.drawable.muslitos); // Asegúrate de que tu imagen esté cargada
+        imagenesDeRecursosDrawableAStringJson(productImageView);
+    }
+
+    private void imagenesDeRecursosDrawableAStringJson(ImageView productImageView) {
+        // Obtener el Bitmap del ImageView
+        Bitmap bitmap = getBitmapFromImageView(productImageView);
+        // Convertir el Bitmap a un array de bytes
+        byte[] imageBytes = ImageUtils.bitmapToByteArray(bitmap);
+        // Convertir el array de bytes a una cadena Base64
+        String base64String = ImageUtils.encodeImageToBase64(imageBytes);
+        // Crear un objeto JSON y añadir la cadena Base64 como atributo
+        JSONObject jsonObject = new JSONObject();
+
+        try {
+            jsonObject.put("imagen", base64String);
+            String jsonString = jsonObject.toString();
+            // Mostrar el JSON en la consola
+            Log.d("JSON Output", jsonString);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private Bitmap getBitmapFromImageView(ImageView imageView) {
+        Drawable drawable = imageView.getDrawable();
+        if (drawable instanceof BitmapDrawable)
+            return ((BitmapDrawable) drawable).getBitmap();
+
+        return null;
+    }
+    //TODO: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        intent();
+        checkCameraPermission();
     }
 
     private void fullScreen() {
@@ -112,11 +171,18 @@ public class AddProductoView extends AppCompatActivity implements AddProductoCon
         );
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
+    private void intent() {
+        intent = getIntent();
+        String nameListIntent;
 
-        checkCameraPermission();
+        if (intent.getStringExtra(getString(R.string.namelist)) != null) {
+            nameListIntent = intent.getStringExtra(getString(R.string.namelist));
+
+            if (nameListIntent.trim().isEmpty())
+                nameList = DEFAULT_STRING;
+            else
+                nameList = nameListIntent;
+        }
     }
 
     // ESCANEAR PRODUCTO
@@ -146,17 +212,63 @@ public class AddProductoView extends AppCompatActivity implements AddProductoCon
     }
 
     // PRODUCTO ENCONTRADO
-    public void findedProduct(View view) {
-        progressBar.setVisibility(View.INVISIBLE);
-        minusButton.setVisibility(View.VISIBLE);
-        plusButton.setVisibility(View.VISIBLE);
-        scanText.setText("Toca para escanear");
+    public void findedProduct(View view, boolean isFound) {
+        if (isFound) {
+            lyScan.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.INVISIBLE);
+            minusButton.setVisibility(View.VISIBLE);
+            plusButton.setVisibility(View.VISIBLE);
+            scanText.setText("Toca para escanear");
+        } else {
+            lyScan.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.INVISIBLE);
+            scanText.setText("Toca para escanear");
+            etDescripcion.setText("Producto no encontrado!");
+        }
+    }
+
+    // MOSTRAR PRODUCTO
+    @Override
+    public void showProduct(ProductoVistaBase product) {
+
+        if (product == null) findedProduct(null, false);
+
+        else {
+            if (product.getNombre().length() >= 15)
+                etNombre.setTextSize(24);
+
+            producto = product;
+
+            productImage.setImageBitmap(ImageUtils.getBitmap(producto.getImagen()));
+            etNombre.setText(product.getNombre());
+            etDescripcion.setText(product.getDescripcion());
+            etPrecioKilo.setText(df.format(product.getPrecioPorKg()) + "€/kg");
+            etPrecio.setText(df.format(product.getPrecio()) + "€");
+            etCantidad.setText("x" + cantidad);
+            etPrecioTotal.setText(df.format(product.getPrecio() * cantidad) + "€");
+
+            producto.setId(0);
+            producto.setCantidad(cantidad);
+            producto.setNombreLista(nameList);
+//            producto.setImagen(new byte[0]);    //TODO: quitar cuando se pongan imagenes
+//            producto.setImagen(ImageUtils.fromImageViewToByteArray(productImage));
+            changeAddButton(true);
+            findedProduct(null, true);
+        }
     }
 
     // GUARDAR PRODUCTO
     public void saveProducto(View view) {
+        String message = DEFAULT_STRING;
         presenter.insertProduct(producto);
-        Toast.makeText(this, "producto añadido", Toast.LENGTH_SHORT).show();
+
+        if (nameList != null)
+            if (nameList.trim().isEmpty())
+                message = getString(R.string.product_added);
+            else
+                message = getString(R.string.product_added_to_list) + nameList;
+
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
     // LIMPÍAR FORMULARIO
@@ -168,26 +280,6 @@ public class AddProductoView extends AppCompatActivity implements AddProductoCon
         etPrecio.setText("");
         etCantidad.setText("");
         etPrecioTotal.setText("");
-    }
-
-    // MOSTRAR PRODUCTO
-    @Override
-    public void showProduct(ProductoVistaBase product) {
-
-        productImage.setImageBitmap(ImageUtils.getBitmap(producto.getImagen()));
-        etNombre.setText(product.getNombre());
-        etDescripcion.setText(product.getDescripcion());
-        etPrecioKilo.setText(df.format(product.getPrecioPorKg()) + "€/kg");
-        etPrecio.setText(df.format(product.getPrecio()) + "€");
-        etCantidad.setText("x" + cantidad);
-        etPrecioTotal.setText(df.format(product.getPrecio() * cantidad) + "€");
-
-        producto = product;
-        producto.setId(0);
-        producto.setCantidad(cantidad);
-        producto.setImagen(new byte[0]);
-        findedProduct(null);
-        changeAddButton(true);
     }
 
     private void changeAddButton(boolean isAddButton) {
@@ -206,11 +298,7 @@ public class AddProductoView extends AppCompatActivity implements AddProductoCon
 
 
     public void clickAddButton(View view) {
-        if (isAddButton) {
-            saveProducto(null);
-        } else {
-            returnView();
-        }
+        saveProducto(null);
     }
 
     public void clickMinusButton(View view) {
@@ -218,6 +306,8 @@ public class AddProductoView extends AppCompatActivity implements AddProductoCon
             cantidad--;
             producto.setCantidad(cantidad);
             etCantidad.setText("x" + cantidad);
+//            if ((producto.getPrecio() * cantidad) < 100)
+//                etPrecioTotal.setTextSize(30);
             etPrecioTotal.setText(df.format(producto.getPrecio() * cantidad) + "€");
         }
     }
@@ -226,12 +316,9 @@ public class AddProductoView extends AppCompatActivity implements AddProductoCon
         cantidad++;
         producto.setCantidad(cantidad);
         etCantidad.setText("x" + cantidad);
+//        if ((producto.getPrecio() * cantidad) >= 100)
+//            etPrecioTotal.setTextSize(24);
         etPrecioTotal.setText(df.format(producto.getPrecio() * cantidad) + "€");
-    }
-
-    private void returnView() {
-        Intent intent = new Intent(this, CalculadoraCompraView.class);
-        startActivity(intent);
     }
 
     @Override
@@ -249,7 +336,8 @@ public class AddProductoView extends AppCompatActivity implements AddProductoCon
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
         if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {

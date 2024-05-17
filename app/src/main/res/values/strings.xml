@@ -27,4 +27,18 @@
     <string name="delete_all_products_success">Lista eliminada con éxito</string>
     <string name="delete_all_products_error">Error al eliminar la lista</string>
     <string name="no_products_to_save">No hay productos para añadir</string>
+    <string name="load_lists_error">Error al cargar las listas favoritas</string>
+    <string name="rename_list_success">Se ha renombrado la lista</string>
+    <string name="rename_list_error">Fallo al renombrar la lista</string>
+    <string name="list_renamed">Lista renombrada</string>
+    <string name="name_list_cant_be_empty">El nombre de la lista no puede estar vacío.</string>
+    <string name="aceptar">Aceptar</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="scan_to_add_products_to_list">Escanea productos para añadir a tu lista.</string>
+    <string name="rename_list">Renombrar lista \'</string>
+    <string name="a_double_dot">\' a:</string>
+    <string name="namelist_double_dot">Nombre de lista:</string>
+    <string name="namelist">nameList</string>
+    <string name="product_added">Producto añadido</string>
+    <string name="product_added_to_list">"Producto añadido a la lista "</string>
 </resources>

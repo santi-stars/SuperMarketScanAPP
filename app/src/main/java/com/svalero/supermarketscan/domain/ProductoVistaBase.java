@@ -5,8 +5,6 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-import java.util.Arrays;
-
 @Entity
 public class ProductoVistaBase implements Comparable<ProductoVistaBase> {
 
@@ -14,8 +12,8 @@ public class ProductoVistaBase implements Comparable<ProductoVistaBase> {
     private int id;
     @ColumnInfo
     private String codigoBarras = "";
-    @ColumnInfo(typeAffinity = ColumnInfo.BLOB)
-    private byte[] imagen = new byte[0];
+    @ColumnInfo
+    private String imagen = ""; // Cambiado a String para almacenar Base64
     @ColumnInfo
     private String nombre = "";
     @ColumnInfo
@@ -45,7 +43,7 @@ public class ProductoVistaBase implements Comparable<ProductoVistaBase> {
     }
 
     @Ignore
-    public ProductoVistaBase(String codigoBarras, byte[] imagen, String nombre, String descripcion, double precio, double precioPorKg, int cantidad, String nombreLista) {
+    public ProductoVistaBase(String codigoBarras, String imagen, String nombre, String descripcion, double precio, double precioPorKg, int cantidad, String nombreLista) {
         this.codigoBarras = codigoBarras;
         this.imagen = imagen;
         this.nombre = nombre;
@@ -72,11 +70,11 @@ public class ProductoVistaBase implements Comparable<ProductoVistaBase> {
         this.codigoBarras = codigoBarras;
     }
 
-    public byte[] getImagen() {
+    public String getImagen() {
         return imagen;
     }
 
-    public void setImagen(byte[] imagen) {
+    public void setImagen(String imagen) {
         this.imagen = imagen;
     }
 
@@ -131,15 +129,15 @@ public class ProductoVistaBase implements Comparable<ProductoVistaBase> {
     @Override
     public String toString() {
         return "ProductoVistaBase{" +
-                "id='" + id + '\'' +
-                "codigoBarras='" + codigoBarras + '\'' +
-                ", imagen=" + Arrays.toString(imagen) +
+                "id=" + id +
+                ", codigoBarras='" + codigoBarras + '\'' +
+                ", imagen='" + imagen + '\'' +
                 ", nombre='" + nombre + '\'' +
                 ", descripcion='" + descripcion + '\'' +
                 ", precio=" + precio +
                 ", precioPorKg=" + precioPorKg +
                 ", cantidad=" + cantidad +
-                ", nombreLista=" + nombreLista +
+                ", nombreLista='" + nombreLista + '\'' +
                 '}';
     }
 

@@ -33,4 +33,9 @@ public class MainActivityView extends AppCompatActivity {
         Intent intent = new Intent(this, CalculadoraCompraView.class);
         startActivity(intent);
     }
+
+    public void favLists(View view) {
+        Intent intent = new Intent(this, FavListView.class);
+        startActivity(intent);
+    }
 }

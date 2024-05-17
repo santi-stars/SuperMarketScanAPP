@@ -36,7 +36,6 @@ public class AddProductoPresenter implements AddProductoContract.Presenter, AddP
 
     @Override
     public void onLoadProductSuccess(ProductoVistaBase producto) {
-        System.out.println("10+++ " + producto.toString());
         view.showProduct(producto);
     }
 

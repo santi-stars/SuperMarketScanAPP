@@ -6,6 +6,7 @@ import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
+import com.svalero.supermarketscan.domain.FavListaTotal;
 import com.svalero.supermarketscan.domain.ProductoVistaBase;
 
 import java.util.List;
@@ -23,8 +24,9 @@ public interface ProductoVBDao {
             " AND (nombreLista LIKE :nameList)")
     List<ProductoVistaBase> getAllByQueryAndNameList(String query, String nameList);
 
-    @Query("SELECT DISTINCT(nombreLista) FROM ProductoVistaBase ")
-    List<ProductoVistaBase> getProductsListsByQuery();
+    @Query("SELECT nombreLista, SUM(precio * cantidad) AS total FROM ProductoVistaBase" +
+            " WHERE nombreLista <> '' GROUP BY nombreLista")
+    List<FavListaTotal> getFavListsWithTotal();
 
     @Query("SELECT * FROM ProductoVistaBase WHERE codigoBarras LIKE :query")
     ProductoVistaBase getProductoByQuery(String query);
@@ -43,4 +45,7 @@ public interface ProductoVBDao {
 
     @Query("DELETE FROM ProductoVistaBase WHERE nombreLista LIKE :nameList")
     void deleteAllByNameList(String nameList);
+
+    @Query("UPDATE ProductoVistaBase SET nombreLista = :newNameList WHERE nombreLista = :oldNameList")
+    void updateNameList(String oldNameList, String newNameList);
 }

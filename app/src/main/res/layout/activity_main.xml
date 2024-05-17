@@ -34,7 +34,7 @@
         android:clickable="true"
         android:contentDescription="@string/app_name"
         android:focusable="true"
-        android:onClick="calculadoraCompras"
+        android:onClick="favLists"
         android:scaleType="fitCenter"
         android:src="@drawable/calculator_list_fire"
         app:layout_constraintEnd_toEndOf="parent"
