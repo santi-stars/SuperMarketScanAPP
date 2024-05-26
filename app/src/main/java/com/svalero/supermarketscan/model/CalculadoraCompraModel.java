@@ -10,13 +10,10 @@ import com.svalero.supermarketscan.domain.ProductoVistaBase;
 
 import java.util.List;
 
-;
-
 public class CalculadoraCompraModel implements CalculadoraCompraContract.Model {
 
     private AppDatabase db;
 
-    //TODO: Implementar try-catch o Call enqueue
     @Override
     public void startDb(Context context) {
         db = Room.databaseBuilder(context,

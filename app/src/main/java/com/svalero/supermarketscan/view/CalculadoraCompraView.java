@@ -44,29 +44,25 @@ public class CalculadoraCompraView extends AppCompatActivity implements Calculad
     public ProductosAdapter productosArrayAdapter;
     public List<ProductoVistaBase> productosVistaBase;
 
-    //TODO: quitar spinner y refactorizar "client" por "product"
     private FrameLayout frameLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calculadora_compra);
-//
-//        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
         productosVistaBase = new ArrayList<>();
         presenter = new CalculadoraCompraPresenter(this);
         productosArrayAdapter = new ProductosAdapter(this, productosVistaBase);
-        //frameLayout = findViewById(R.id.frame_layout_client);
+
         nameList = DEFAULT_STRING;
         intent();
 
         orderBy = DEFAULT_STRING;
-        findClientsBy(DEFAULT_STRING);
+        findProductsBy(DEFAULT_STRING);
         fullScreen();
     }
 
-    //TODO: getIntent nameList si no es null o vacio que no haga nada y si tiene nombre que ponga un titulo con el nombre de lista
     private void fullScreen() {
         getWindow().getDecorView().setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE
@@ -82,7 +78,7 @@ public class CalculadoraCompraView extends AppCompatActivity implements Calculad
         super.onResume();
 
         intent();
-        findClientsBy(DEFAULT_STRING);
+        findProductsBy(DEFAULT_STRING);
     }
 
     private void intent() {
@@ -109,19 +105,19 @@ public class CalculadoraCompraView extends AppCompatActivity implements Calculad
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.product_list_actionbar, menu);
 
-        final MenuItem searchItem = menu.findItem(R.id.app_bar_client_search);
+        final MenuItem searchItem = menu.findItem(R.id.app_bar_product_search);
         final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                findClientsBy(query.trim());
+                findProductsBy(query.trim());
                 return true;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                findClientsBy(newText.trim());
+                findProductsBy(newText.trim());
                 return true;
             }
         });
@@ -151,7 +147,7 @@ public class CalculadoraCompraView extends AppCompatActivity implements Calculad
         productosArrayAdapter.notifyDataSetChanged();
     }
 
-    private void findClientsBy(String query) {
+    private void findProductsBy(String query) {
         productosVistaBase.clear();
 
         if (query.equalsIgnoreCase(DEFAULT_STRING))
@@ -244,10 +240,7 @@ public class CalculadoraCompraView extends AppCompatActivity implements Calculad
 
         int id = item.getItemId();
 
-        if (id == R.id.detail_menu) {                      // Detalles del producto
-            showDetails(info.position);
-            return true;
-        } else if (id == R.id.delete_menu) {              // Eliminar producto
+        if (id == R.id.delete_menu) {              // Eliminar producto
             deleteProduct(info);
             return true;
         } else if (id == R.id.delete_all_menu) {              // Eliminar lista
@@ -265,7 +258,7 @@ public class CalculadoraCompraView extends AppCompatActivity implements Calculad
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         presenter.deleteProduct(product);
-                        findClientsBy(DEFAULT_STRING);
+                        findProductsBy(DEFAULT_STRING);
                         getTotal();
                     }
                 })
@@ -287,7 +280,7 @@ public class CalculadoraCompraView extends AppCompatActivity implements Calculad
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         presenter.deleteAllProductsByNameList(nameList);
-                        findClientsBy(nameList);
+                        findProductsBy(nameList);
                         getTotal();
                     }
                 })
@@ -317,31 +310,6 @@ public class CalculadoraCompraView extends AppCompatActivity implements Calculad
             Objects.requireNonNull(getSupportActionBar()).setTitle(calculatorIcon + " " + totalTitle + " " + total + euroSymbol);
     }
 
-    private void showDetails(int position) {
-      /*  showMessage(position);
-        DetailFragment detailFragment = new DetailFragment();
-
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.product_detail, detailFragment)
-                .commit();
-/*
-        ProductoVistaBase client = productosVistaBase.get(position);
-
-        Bundle datos = new Bundle();
-        datos.putByteArray("client_image", client.getClientImage());
-        datos.putString("name", client.getName());
-        datos.putString("surname", client.getSurname());
-        datos.putString("dni", client.getDni());
-        datos.putBoolean("vip", client.isVip());
-        datos.putFloat("latitude", client.getLatitude());
-        datos.putFloat("longitude", client.getLongitude());
-
-
-        frameLayout.setVisibility(View.VISIBLE);
-        */
-    }
-
     public void scanProduct(View view) {
         Bundle datos = new Bundle();
         datos.putString(getString(R.string.namelist), nameList);
@@ -353,7 +321,6 @@ public class CalculadoraCompraView extends AppCompatActivity implements Calculad
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        showDetails(position);
     }
 
     public void returnTo(View view) {

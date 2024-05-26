@@ -2,10 +2,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/detail_menu"
-        android:title="📜 DETALLES"></item>
-
-    <item
         android:id="@+id/delete_menu"
         android:title="🗑 ELIMINAR"></item>
 

@@ -3,7 +3,6 @@ package com.svalero.supermarketscan.contract;
 import android.content.Context;
 
 import com.svalero.supermarketscan.domain.FavListaTotal;
-import com.svalero.supermarketscan.domain.ProductoVistaBase;
 
 import java.util.List;
 

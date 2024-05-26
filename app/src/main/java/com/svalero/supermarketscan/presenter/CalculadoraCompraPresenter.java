@@ -41,9 +41,7 @@ public class CalculadoraCompraPresenter implements CalculadoraCompraContract.Pre
         query = "%" + query + "%";
 
         try {
-            System.out.println("DIBUG loadProductoByQuery: " + query);
             productosVBList = model.loadProductosByQueryAndNameList(query, nameList);
-            System.out.println("DIBUG loadProductoByQuery productosVBList: " + productosVBList);
             view.listProductosVB(productosVBList);
         } catch (Exception e) {
             e.printStackTrace();
@@ -72,13 +70,13 @@ public class CalculadoraCompraPresenter implements CalculadoraCompraContract.Pre
     @Override
     public void deleteAllProductsByNameList(String nameList) {
 
-            try {
-                model.deleteAllProductsByNameList(nameList);
-                showMessage(R.string.delete_all_products_success);
-            } catch (Exception e) {
-                e.printStackTrace();
-                showMessage(R.string.delete_all_products_error);
-            }
+        try {
+            model.deleteAllProductsByNameList(nameList);
+            showMessage(R.string.delete_all_products_success);
+        } catch (Exception e) {
+            e.printStackTrace();
+            showMessage(R.string.delete_all_products_error);
+        }
     }
 
     private void showMessage(int message) {

@@ -41,4 +41,5 @@
     <string name="namelist">nameList</string>
     <string name="product_added">Producto añadido</string>
     <string name="product_added_to_list">"Producto añadido a la lista "</string>
+    <string name="login_error">Usuario y/o contraseña incorrecto</string>
 </resources>

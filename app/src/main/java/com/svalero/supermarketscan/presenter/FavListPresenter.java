@@ -9,7 +9,7 @@ import com.svalero.supermarketscan.view.FavListView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FavListPresenter implements FavListContract.Presenter{
+public class FavListPresenter implements FavListContract.Presenter {
 
     private FavListModel model;
     private FavListView view;
@@ -23,6 +23,7 @@ public class FavListPresenter implements FavListContract.Presenter{
 
         this.view = view;
     }
+
     @Override
     public void loadFavList() {
         favList.clear();

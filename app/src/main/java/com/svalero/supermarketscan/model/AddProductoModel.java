@@ -1,6 +1,7 @@
 package com.svalero.supermarketscan.model;
 
 import android.content.Context;
+import android.util.Log;
 
 import androidx.room.Room;
 
@@ -24,7 +25,7 @@ public class AddProductoModel implements AddProductoContract.Model {
     @Override
     public void startDb(Context context) {
         producto = new ProductoVistaBase();
-        api = SmScanApi.buildInstance();
+        api = SmScanApi.buildInstance(context);
         db = Room.databaseBuilder(context,
                         AppDatabase.class, "ProductoVistaBase").allowMainThreadQueries()
                 .fallbackToDestructiveMigration().build();
@@ -32,7 +33,10 @@ public class AddProductoModel implements AddProductoContract.Model {
 
     @Override
     public void loadProductByQuery(OnLoadProductListener listener, String query) {
-        Call<ProductoVistaBase> productoCall = api.getProductoGitHub(query);
+        Call<ProductoVistaBase> productoCall = api.getProductoBase(query);
+
+        String requestUrl = productoCall.request().url().toString();
+        Log.d("PRODUCT_URL", requestUrl);
 
         loadProductoCallEnqueue(listener, productoCall);
     }

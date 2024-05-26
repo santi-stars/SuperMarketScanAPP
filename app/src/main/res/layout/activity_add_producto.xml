@@ -130,8 +130,8 @@
             android:layout_width="90dp"
             android:layout_height="90dp"
             android:layout_gravity="center"
-            android:background="@drawable/rounded_corners_33"
             android:adjustViewBounds="true"
+            android:background="@drawable/rounded_corners_33"
             android:contentDescription="@string/app_name"
             android:scaleType="fitXY"
             app:srcCompat="@drawable/calculator_fire" />

@@ -43,10 +43,10 @@ public class ProductosAdapter extends BaseAdapter {
         TextView precioTotalTv = convertView.findViewById(R.id.product_precio_adapter);
 
         if (productoVB.getImagen() != null)
-            if(!productoVB.getImagen().isEmpty())
-            productoVBImage.setImageBitmap(ImageUtils.getBitmap(productoVB.getImagen()));
-        else
-            productoVBImage.setImageResource(R.drawable.calculator_fire);
+            if (!productoVB.getImagen().isEmpty())
+                productoVBImage.setImageBitmap(ImageUtils.getBitmapFromBase64(productoVB.getImagen()));
+            else
+                productoVBImage.setImageResource(R.drawable.calculator_fire);
 
         nombreTv.setText(productoVB.getNombre());
         descTv.setText(productoVB.getDescripcion());

@@ -4,15 +4,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
-import android.view.ContextMenu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -41,6 +38,7 @@ public class FavListView extends AppCompatActivity implements AdapterView.OnItem
         presenter = new FavListPresenter(this);
         favListView = findViewById(R.id.fav_list_lisview);
 
+        fullScreen();
         presenter.loadFavList();
     }
 
@@ -50,6 +48,17 @@ public class FavListView extends AppCompatActivity implements AdapterView.OnItem
 
         presenter.loadFavList();
         refreshList();
+    }
+
+    private void fullScreen() {
+        // Oculta la barra de navegación y la barra de estado con el modo inmersivo pegajoso
+        getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+        );
     }
 
     @Override
@@ -67,36 +76,6 @@ public class FavListView extends AppCompatActivity implements AdapterView.OnItem
     @Override
     public void showMessage(int message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-    }
-
-    //TODO: quitar menu contextual
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo
-            menuInfo) {
-        super.onCreateContextMenu(menu, v, menuInfo);
-
-        getMenuInflater().inflate(R.menu.listview_menu, menu);
-    }
-
-    //TODO: quitar menu contextual
-    @Override
-    public boolean onContextItemSelected(@NonNull MenuItem item) {
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-
-        int id = item.getItemId();
-
-        if (id == R.id.detail_menu) {                      // Detalles del producto
-//            showDetails(info.position);
-            return true;
-        } else if (id == R.id.delete_menu) {              // Eliminar producto
-//            deleteProduct(info);
-            return true;
-        } else if (id == R.id.delete_all_menu) {              // Eliminar lista
-//            deleteAllProduct();
-            return true;
-        } else {
-            return super.onContextItemSelected(item);
-        }
     }
 
     public void editFavList(View view, final int position) {

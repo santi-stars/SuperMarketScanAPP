@@ -18,22 +18,20 @@ public class ImageUtils {
         return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
     }
 
-    // Convert byte array to Base64 string
     public static String encodeImageToBase64(byte[] imageBytes) {
         return Base64.encodeToString(imageBytes, Base64.DEFAULT);
     }
 
-    public static Bitmap getBitmap(String base64String) {
+    public static Bitmap getBitmapFromBase64(String base64String) {
         byte[] decodedString = Base64.decode(base64String, Base64.DEFAULT);
-        return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+        Bitmap decodedByte = getBitmapFromByte(decodedString);
+        return decodedByte;
     }
 
-    // Convert Base64 string to byte array
     public static byte[] decodeImageFromBase64(String base64String) {
         return Base64.decode(base64String, Base64.DEFAULT);
     }
 
-    // Convert Bitmap to byte array
     public static byte[] bitmapToByteArray(Bitmap bitmap) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);

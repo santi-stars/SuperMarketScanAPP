@@ -57,7 +57,6 @@ public class AddProductoView extends AppCompatActivity implements AddProductoCon
     private TextView scanText;
     private ProgressBar progressBar;
     private boolean isPaused;
-    private boolean isAddButton;
     private ListenableFuture<ProcessCameraProvider> cameraProviderFuture;
 
     private ProductoVistaBase producto;
@@ -105,7 +104,6 @@ public class AddProductoView extends AppCompatActivity implements AddProductoCon
         df = new DecimalFormat("#.##");
         cantidad = 1;
         isPaused = false;
-        isAddButton = false;
         // Llama al método para verificar y solicitar permisos de cámara
         checkCameraPermission();
         // Inicializa la vista previa de la cámara y el TextView mediante búsqueda por ID en el layout.
@@ -117,20 +115,39 @@ public class AddProductoView extends AppCompatActivity implements AddProductoCon
     private void imagenesAJson() {
         // Configura tu ImageView aquí
         ImageView productImageView = findViewById(R.id.product_imageView);
-//        productImageView.setImageResource(R.drawable.huevos); // Asegúrate de que tu imagen esté cargada
-//        imagenesDeRecursosDrawableAStringJson(productImageView);
+
+        productImageView.setImageResource(R.drawable.arroz); // Asegúrate de que tu imagen esté cargada
+        imagenesDeRecursosDrawableAStringJson(productImageView);
+        productImageView.setImageResource(R.drawable.integral); // Asegúrate de que tu imagen esté cargada
+        imagenesDeRecursosDrawableAStringJson(productImageView);
+        productImageView.setImageResource(R.drawable.salmon); // Asegúrate de que tu imagen esté cargada
+        imagenesDeRecursosDrawableAStringJson(productImageView);
+        productImageView.setImageResource(R.drawable.vino); // Asegúrate de que tu imagen esté cargada
+        imagenesDeRecursosDrawableAStringJson(productImageView);
+        productImageView.setImageResource(R.drawable.pechuga); // Asegúrate de que tu imagen esté cargada
+        imagenesDeRecursosDrawableAStringJson(productImageView);
+        productImageView.setImageResource(R.drawable.atun); // Asegúrate de que tu imagen esté cargada
+        imagenesDeRecursosDrawableAStringJson(productImageView);
+        productImageView.setImageResource(R.drawable.manzana); // Asegúrate de que tu imagen esté cargada
+        imagenesDeRecursosDrawableAStringJson(productImageView);
+        productImageView.setImageResource(R.drawable.patatas); // Asegúrate de que tu imagen esté cargada
+        imagenesDeRecursosDrawableAStringJson(productImageView);
+        productImageView.setImageResource(R.drawable.helado); // Asegúrate de que tu imagen esté cargada
+        imagenesDeRecursosDrawableAStringJson(productImageView);
+        productImageView.setImageResource(R.drawable.leche); // Asegúrate de que tu imagen esté cargada
+        imagenesDeRecursosDrawableAStringJson(productImageView);
         productImageView.setImageResource(R.drawable.muslitos); // Asegúrate de que tu imagen esté cargada
+        imagenesDeRecursosDrawableAStringJson(productImageView);
+        productImageView.setImageResource(R.drawable.huevos); // Asegúrate de que tu imagen esté cargada
+        imagenesDeRecursosDrawableAStringJson(productImageView);
+        productImageView.setImageResource(R.drawable.couscous); // Asegúrate de que tu imagen esté cargada
         imagenesDeRecursosDrawableAStringJson(productImageView);
     }
 
     private void imagenesDeRecursosDrawableAStringJson(ImageView productImageView) {
-        // Obtener el Bitmap del ImageView
         Bitmap bitmap = getBitmapFromImageView(productImageView);
-        // Convertir el Bitmap a un array de bytes
         byte[] imageBytes = ImageUtils.bitmapToByteArray(bitmap);
-        // Convertir el array de bytes a una cadena Base64
         String base64String = ImageUtils.encodeImageToBase64(imageBytes);
-        // Crear un objeto JSON y añadir la cadena Base64 como atributo
         JSONObject jsonObject = new JSONObject();
 
         try {
@@ -145,6 +162,7 @@ public class AddProductoView extends AppCompatActivity implements AddProductoCon
 
     private Bitmap getBitmapFromImageView(ImageView imageView) {
         Drawable drawable = imageView.getDrawable();
+
         if (drawable instanceof BitmapDrawable)
             return ((BitmapDrawable) drawable).getBitmap();
 
@@ -239,7 +257,7 @@ public class AddProductoView extends AppCompatActivity implements AddProductoCon
 
             producto = product;
 
-            productImage.setImageBitmap(ImageUtils.getBitmap(producto.getImagen()));
+            productImage.setImageBitmap(ImageUtils.getBitmapFromBase64(producto.getImagen()));
             etNombre.setText(product.getNombre());
             etDescripcion.setText(product.getDescripcion());
             etPrecioKilo.setText(df.format(product.getPrecioPorKg()) + "€/kg");
@@ -250,8 +268,6 @@ public class AddProductoView extends AppCompatActivity implements AddProductoCon
             producto.setId(0);
             producto.setCantidad(cantidad);
             producto.setNombreLista(nameList);
-//            producto.setImagen(new byte[0]);    //TODO: quitar cuando se pongan imagenes
-//            producto.setImagen(ImageUtils.fromImageViewToByteArray(productImage));
             changeAddButton(true);
             findedProduct(null, true);
         }
@@ -283,7 +299,6 @@ public class AddProductoView extends AppCompatActivity implements AddProductoCon
     }
 
     private void changeAddButton(boolean isAddButton) {
-        this.isAddButton = isAddButton;
 
         if (isAddButton) {
             addButton.setAlpha(1.0f);
@@ -296,7 +311,6 @@ public class AddProductoView extends AppCompatActivity implements AddProductoCon
         }
     }
 
-
     public void clickAddButton(View view) {
         saveProducto(null);
     }
@@ -306,8 +320,6 @@ public class AddProductoView extends AppCompatActivity implements AddProductoCon
             cantidad--;
             producto.setCantidad(cantidad);
             etCantidad.setText("x" + cantidad);
-//            if ((producto.getPrecio() * cantidad) < 100)
-//                etPrecioTotal.setTextSize(30);
             etPrecioTotal.setText(df.format(producto.getPrecio() * cantidad) + "€");
         }
     }
@@ -316,8 +328,6 @@ public class AddProductoView extends AppCompatActivity implements AddProductoCon
         cantidad++;
         producto.setCantidad(cantidad);
         etCantidad.setText("x" + cantidad);
-//        if ((producto.getPrecio() * cantidad) >= 100)
-//            etPrecioTotal.setTextSize(24);
         etPrecioTotal.setText(df.format(producto.getPrecio() * cantidad) + "€");
     }
 
@@ -328,11 +338,9 @@ public class AddProductoView extends AppCompatActivity implements AddProductoCon
 
     // CÁMARA Y PERMISOS ----------------------------------------------
     private void checkCameraPermission() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_REQUEST_CODE);
-        } else {
-            proceedWithCamera();
-        }
+        else proceedWithCamera();
     }
 
     @Override
@@ -340,11 +348,9 @@ public class AddProductoView extends AppCompatActivity implements AddProductoCon
                                            @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
             proceedWithCamera();
-        } else {
-            handlePermissionDenial();
-        }
+        else handlePermissionDenial();
     }
 
     @OptIn(markerClass = ExperimentalGetImage.class)
