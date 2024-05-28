@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <network-security-config>
     <domain-config cleartextTrafficPermitted="true">
-        <domain includeSubdomains="true">192.168.10.155</domain>
+        <domain includeSubdomains="true">192.168.1.166</domain>
         <trust-anchors>
+            <certificates src="user"/>
+            <certificates src="system"/>
             <certificates src="@raw/certificate"/>
         </trust-anchors>
     </domain-config>
