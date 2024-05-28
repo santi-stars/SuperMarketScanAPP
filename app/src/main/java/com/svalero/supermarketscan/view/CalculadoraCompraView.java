@@ -244,7 +244,7 @@ public class CalculadoraCompraView extends AppCompatActivity implements Calculad
             deleteProduct(info);
             return true;
         } else if (id == R.id.delete_all_menu) {              // Eliminar lista
-            deleteAllProduct();
+            deleteProductList();
             return true;
         } else return super.onContextItemSelected(item);
     }
@@ -272,7 +272,7 @@ public class CalculadoraCompraView extends AppCompatActivity implements Calculad
         builder.create().show();
     }
 
-    private void deleteAllProduct() {
+    private void deleteProductList() {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(R.string.are_you_sure_delete_list)
@@ -347,8 +347,10 @@ public class CalculadoraCompraView extends AppCompatActivity implements Calculad
 
                     if (listName.trim().isEmpty())
                         showEmptyListNameDialog();
-                    else
+                    else {
                         savePersonalList(listName);
+                        favLists(view);
+                    }
                 }
             });
             builder.setNegativeButton(R.string.cancelar, new DialogInterface.OnClickListener() {
@@ -400,5 +402,10 @@ public class CalculadoraCompraView extends AppCompatActivity implements Calculad
 
         getTotal();
         refreshList();
+    }
+
+    public void favLists(View view) {
+        Intent intent = new Intent(this, FavListView.class);
+        startActivity(intent);
     }
 }

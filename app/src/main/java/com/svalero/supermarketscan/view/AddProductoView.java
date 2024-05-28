@@ -396,14 +396,10 @@ public class AddProductoView extends AppCompatActivity implements AddProductoCon
                         // Modifica aquí la expresión regular para buscar secuencias de 13 dígitos
                         Pattern pattern = Pattern.compile("\\b(\\d{1,2})[-\\s]?(\\d{6})[-\\s]?(\\d{6})\\b");
                         Matcher matcher = pattern.matcher(fullText);
-                        System.out.println("2+++ matcher " + matcher);
                         StringBuilder resultText = new StringBuilder();
                         while (matcher.find()) {
-                            // Concatena todas las coincidencias encontradas sin espacios ni guiones
-                            String cleanLine = matcher.group(1) + matcher.group(2) + matcher.group(3); // Concatenar los grupos de números sin espacios ni guiones
-                            System.out.println("2+++ cleanLine " + cleanLine);
+                            String cleanLine = matcher.group(1) + matcher.group(2) + matcher.group(3); 
                             resultText.append(cleanLine).append("\n");
-                            System.out.println("2+++ resultText " + resultText);
                         }
 
                         String finalResultText = resultText.toString().trim();
@@ -412,8 +408,6 @@ public class AddProductoView extends AppCompatActivity implements AddProductoCon
                             if (finalResultText.isEmpty()) {
                                 runOnUiThread(() -> detectedText.setText(getResources().getString(R.string.scan_product)));
                             } else {
-                                System.out.println("1+++ ");
-                                System.out.println("2+++ finalResultText " + finalResultText);
                                 runOnUiThread(() -> detectedText.setText(finalResultText)); // Actualiza el TextView con el texto detectado
                                 searchProduct(finalResultText);
                             }
